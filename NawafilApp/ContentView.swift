@@ -1,8 +1,15 @@
+//
+//  Untitled.swift
+//  NawafilApp
+//
+//  Created by Eatzaz Hafiz on 07/02/2026.
+//
+
 import SwiftUI
 
 struct ContentView: View {
     @Environment(\.dismiss) var dismiss
-    @State private var currentIndex = 1
+    @State private var currentIndex = 0
     
     var body: some View {
         NavigationStack {
@@ -11,53 +18,39 @@ struct ContentView: View {
                     .ignoresSafeArea(edges: .all)
                 
                 VStack(spacing: 0) {
-                    Text("صلاة الضحى")
-                        .foregroundColor(.titlecolor)
-                        .font(.custom("SF Arabic Pro", size: 36))
-                        .fontWeight(.bold)
-                        .padding(.top, 20)
                     
                     Spacer()
                     
-                    GeometryReader { geometry in
-                        let width = geometry.size.width
-                        
-                        ScrollView(.horizontal, showsIndicators: false) {
-                            HStack(spacing: -150) {
-                                ForEach(0..<3) { index in
-                                    GeometryReader { cardGeometry in
-                                        let minX = cardGeometry.frame(in: .global).minX
-                                        let cardWidth: CGFloat = 219
-                                        let screenCenter = width / 2
-                                        let cardCenter = minX + cardWidth / 2
-                                        let offset = abs(screenCenter - cardCenter)
-                                        
-                                        let scale = max(0.88, 1 - (offset / width) * 0.12)
-                                        let verticalOffset = min(offset / 5, 40)
-                                        
-                                        CardView(
-                                            title: getCardTitle(for: index),
-                                            content: getCardContent(for: index)
-                                        )
-                                        .scaleEffect(scale)
-                                        .offset(y: verticalOffset)
-                                        .zIndex(offset > 50 ? 0 : 1)
-                                    }
-                                    .frame(width: 219, height: 390)
-                                    .padding(.horizontal, (width - 219) / 2)
-                                }
+                    TabView(selection: $currentIndex) {
+                        ForEach(0..<3) { index in
+                            GeometryReader { geo in
+                                let minX = geo.frame(in: .global).minX
+                                let screenWidth = UIScreen.main.bounds.width
+                                let offset = minX - (screenWidth / 2 - 270 / 2)
+                                let absOffset = abs(offset)
+                                
+                                let scale = 1 - min(absOffset / screenWidth, 0.12)
+                                let verticalOffset = min(absOffset / 8, 40)
+                                
+                                CardView(
+                                    title: getCardTitle(for: index),
+                                    content: getCardContent(for: index)
+                                )
+                                .scaleEffect(scale)
+                                .offset(y: verticalOffset)
+                                .frame(width: geo.size.width, height: geo.size.height)
                             }
-                            .scrollTargetLayout()
+                            .frame(width: 270, height: 480)
+                            .tag(index)
                         }
-                        .scrollTargetBehavior(.paging)
-                        .contentMargins(.horizontal, 0, for: .scrollContent)
                     }
-                    .frame(height: 480)
+                    .tabViewStyle(.page(indexDisplayMode: .never))
+                    .frame(height: 550)
                     
                     HStack(spacing: 8) {
                         ForEach(0..<3) { index in
                             Circle()
-                                .fill(Color.gray.opacity(0.4))
+                                .fill(currentIndex == index ? Color.titlecolor : Color.gray.opacity(0.4))
                                 .frame(width: 8, height: 8)
                         }
                     }
@@ -67,9 +60,16 @@ struct ContentView: View {
                     
                 }
             }
-            .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
+                ToolbarItem(placement: .principal) {
+                    Text("صلاة الضحى")
+//                        .font(.custom("SF Arabic Pro", size: 36))
+                        .font(.system(size: 34, weight: .bold, design: .default))
+                        .fontWeight(.bold)
+                        .foregroundColor(.titlecolor)
+                }
+
+                ToolbarItem(placement: .navigationBarTrailing) {
                     Button {
                     } label: {
                         Image(systemName: "bell.fill")
@@ -77,6 +77,7 @@ struct ContentView: View {
                     }
                 }
             }
+
         }
     }
     
@@ -106,23 +107,15 @@ struct CardView: View {
     var body: some View {
         ZStack {
             Rectangle()
-                .fill(
-                    LinearGradient(
-                        colors: [
-                            Color.cards,
-                            Color.cards.opacity(0.6)
-                        ],
-                        startPoint: .topLeading,
-                        endPoint: .bottomTrailing
-                    )
-                )
-                .frame(width: 219, height: 390)
+                .fill(.cards)
+                .frame(width: 270, height: 480)
                 .cornerRadius(24)
             
             VStack(spacing: 20) {
                 Text(title)
                     .foregroundColor(.textcolor)
-                    .font(.custom("SF Arabic", size: 30))
+//                    .font(.custom("SF Arabic", size: 36))
+                    .font(.system(size: 36, weight: .bold, design: .default))
                     .fontWeight(.bold)
                     .padding(.top, 40)
                 
@@ -130,14 +123,15 @@ struct CardView: View {
                 
                 Text(content)
                     .foregroundColor(.textcolor)
-                    .font(.custom("SF Arabic", size: 14))
+//                    .font(.custom("SF Arabic", size: 18))
+                    .font(.system(size: 18, weight: .regular, design: .default))
                     .multilineTextAlignment(.center)
-                    .lineSpacing(8)
-                    .padding(.horizontal, 16)
+                    .lineSpacing(10)
+                    .padding(.horizontal, 20)
                 
                 Spacer()
             }
-            .frame(width: 219, height: 390)
+            .frame(width: 270, height: 480)
         }
     }
 }

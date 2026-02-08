@@ -12,7 +12,7 @@ struct NawafilListView: View {
     let title: String
     let description: String
     let items: [String]
-    
+
     var body: some View {
         NavigationStack {
             ZStack {
@@ -22,13 +22,14 @@ struct NawafilListView: View {
                 VStack(spacing: 0) {
                     Text(title)
                         .font(.system(size: 48, weight: .bold, design: .default))
-//                        .font(.custom("SF Arabic Pro", size: 48))
+                        .font(.custom("SF Arabic Pro", size: 48))
 //                        .fontWeight(.bold)
                         .foregroundColor(textColor)
                         .padding(.top, 10)
                     
                     Text(description)
-                        .font(.custom("SF Arabic Pro", size: 16))
+                    
+//                        .font(.custom("SF Arabic Pro", size: 16))
                         .fontWeight(.thin)
                         .foregroundColor(textColor)
                         .multilineTextAlignment(.center)
@@ -52,7 +53,7 @@ struct NawafilListView: View {
                     .padding(.bottom, 0)
                 }
             }
-           // .navigationBarHidden(true)
+            .navigationBarHidden(true)
         }
     }
 }
