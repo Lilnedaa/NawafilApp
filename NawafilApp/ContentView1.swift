@@ -122,7 +122,7 @@ struct CardView1: View {
             
             VStack(spacing: 20) {
                 Text(title)
-//                    .foregroundColor(.textColor)
+//                    .foregroundColor(.textcolor)
                     .font(.custom("SF Arabic", size: 36))
                     .fontWeight(.bold)
                     .padding(.top, 40)

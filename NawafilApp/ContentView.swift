@@ -129,7 +129,7 @@ struct CardView: View {
                 Spacer()
                 
                 Text(content)
-//                    .foregroundColor(.textcolor)
+                  //  .foregroundColor(.textcolor)
                     .font(.custom("SF Arabic", size: 14))
                     .multilineTextAlignment(.center)
                     .lineSpacing(8)
