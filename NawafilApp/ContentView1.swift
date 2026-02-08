@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct ContentView: View {
+struct ContentView1: View {
     @Environment(\.dismiss) var dismiss
     @State private var currentIndex = 0
     
@@ -18,9 +18,15 @@ struct ContentView: View {
                     .ignoresSafeArea(edges: .all)
                 
                 VStack(spacing: 0) {
+                    Text("صلاة الضحى")
+                        .foregroundColor(.titlecolor)
+                        .font(.custom("SF Arabic Pro", size: 38))
+                        .fontWeight(.bold)
+                        .padding(.top, 20)
                     
                     Spacer()
                     
+                    // Carousel Cards with TabView
                     TabView(selection: $currentIndex) {
                         ForEach(0..<3) { index in
                             GeometryReader { geo in
@@ -29,10 +35,11 @@ struct ContentView: View {
                                 let offset = minX - (screenWidth / 2 - 270 / 2)
                                 let absOffset = abs(offset)
                                 
+                                // Scale and vertical offset based on distance from center
                                 let scale = 1 - min(absOffset / screenWidth, 0.12)
                                 let verticalOffset = min(absOffset / 8, 40)
                                 
-                                CardView(
+                                CardView1(
                                     title: getCardTitle(for: index),
                                     content: getCardContent(for: index)
                                 )
@@ -47,6 +54,7 @@ struct ContentView: View {
                     .tabViewStyle(.page(indexDisplayMode: .never))
                     .frame(height: 550)
                     
+                    // Page Indicator Dots
                     HStack(spacing: 8) {
                         ForEach(0..<3) { index in
                             Circle()
@@ -60,16 +68,9 @@ struct ContentView: View {
                     
                 }
             }
+            .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                ToolbarItem(placement: .principal) {
-                    Text("صلاة الضحى")
-//                        .font(.custom("SF Arabic Pro", size: 36))
-                        .font(.system(size: 34, weight: .bold, design: .default))
-                        .fontWeight(.bold)
-                        .foregroundColor(.titlecolor)
-                }
-
-                ToolbarItem(placement: .navigationBarTrailing) {
+                ToolbarItem(placement: .navigationBarLeading) {
                     Button {
                     } label: {
                         Image(systemName: "bell.fill")
@@ -77,7 +78,6 @@ struct ContentView: View {
                     }
                 }
             }
-
         }
     }
     
@@ -100,41 +100,38 @@ struct ContentView: View {
     }
 }
 
-struct CardView: View {
+struct CardView1: View {
     let title: String
     let content: String
     
     var body: some View {
         ZStack {
             Rectangle()
-                .fill(.cards)
+                .fill(
+                    LinearGradient(
+                        colors: [
+                            Color.cards,
+                            Color.cards.opacity(0.6)
+                        ],
+                        startPoint: .topLeading,
+                        endPoint: .bottomTrailing
+                    )
+                )
                 .frame(width: 270, height: 480)
                 .cornerRadius(24)
             
             VStack(spacing: 20) {
                 Text(title)
-<<<<<<< HEAD
-                    .foregroundColor(.textcolor)
-//                    .font(.custom("SF Arabic", size: 36))
-                    .font(.system(size: 36, weight: .bold, design: .default))
-=======
 //                    .foregroundColor(.textcolor)
-                    .font(.custom("SF Arabic", size: 30))
->>>>>>> main
+                    .font(.custom("SF Arabic", size: 36))
                     .fontWeight(.bold)
                     .padding(.top, 40)
                 
                 Spacer()
                 
                 Text(content)
-<<<<<<< HEAD
-                    .foregroundColor(.textcolor)
-//                    .font(.custom("SF Arabic", size: 18))
-                    .font(.system(size: 18, weight: .regular, design: .default))
-=======
-                  //  .foregroundColor(.textcolor)
-                    .font(.custom("SF Arabic", size: 14))
->>>>>>> main
+//                    .foregroundColor(.textcolor)
+                    .font(.custom("SF Arabic", size: 18))
                     .multilineTextAlignment(.center)
                     .lineSpacing(10)
                     .padding(.horizontal, 20)
@@ -147,5 +144,5 @@ struct CardView: View {
 }
 
 #Preview {
-    ContentView()
+    ContentView1()
 }
