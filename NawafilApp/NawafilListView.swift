@@ -53,15 +53,12 @@ struct NawafilListView: View {
                     .padding(.bottom, 0)
                 }
             }
-<<<<<<< HEAD
             .navigationBarHidden(true)
         }
-=======
            // .navigationBarHidden(true)
-        }.navigationTitle("الصلاة")
->>>>>>> main
-    }
+        }
 }
+
 
 
 struct SalahView: View {

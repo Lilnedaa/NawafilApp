@@ -113,28 +113,24 @@ struct CardView: View {
             
             VStack(spacing: 20) {
                 Text(title)
-<<<<<<< HEAD
                     .foregroundColor(.textcolor)
 //                    .font(.custom("SF Arabic", size: 36))
                     .font(.system(size: 36, weight: .bold, design: .default))
-=======
 //                    .foregroundColor(.textcolor)
                     .font(.custom("SF Arabic", size: 30))
->>>>>>> main
+
                     .fontWeight(.bold)
                     .padding(.top, 40)
                 
                 Spacer()
                 
                 Text(content)
-<<<<<<< HEAD
                     .foregroundColor(.textcolor)
 //                    .font(.custom("SF Arabic", size: 18))
                     .font(.system(size: 18, weight: .regular, design: .default))
-=======
+
                   //  .foregroundColor(.textcolor)
                     .font(.custom("SF Arabic", size: 14))
->>>>>>> main
                     .multilineTextAlignment(.center)
                     .lineSpacing(10)
                     .padding(.horizontal, 20)
