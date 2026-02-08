@@ -53,7 +53,7 @@ struct NawafilListView: View {
                 }
             }
            // .navigationBarHidden(true)
-        }
+        }.navigationTitle("الصلاة")
     }
 }
 
@@ -120,7 +120,8 @@ struct CButton: View {
                 .cornerRadius(27)
                 .glassEffect()
                 //.cornerRadius(12)
-        }
+        }.navigationTitle("الصلاة").navigationBarTitleDisplayMode(.inline)
+
     }
 }
 
