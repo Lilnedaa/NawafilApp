@@ -6,6 +6,12 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		C17498AE2F3A94B00044C6C3 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C17498AD2F3A94B00044C6C3 /* WidgetKit.framework */; };
+		C17498B02F3A94B00044C6C3 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C17498AF2F3A94B00044C6C3 /* SwiftUI.framework */; };
+		C17498BF2F3A94B10044C6C3 /* TsbeehWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = C17498AB2F3A94B00044C6C3 /* TsbeehWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		814C10602F2F433800055263 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -21,17 +27,64 @@
 			remoteGlobalIDString = 814C10512F2F433800055263;
 			remoteInfo = NawafilApp;
 		};
+		C17498BD2F3A94B10044C6C3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 814C104A2F2F433800055263 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C17498AA2F3A94B00044C6C3;
+			remoteInfo = TsbeehWidgetExtension;
+		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		C17498C02F3A94B10044C6C3 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				C17498BF2F3A94B10044C6C3 /* TsbeehWidgetExtension.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		814C10522F2F433800055263 /* NawafilApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NawafilApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		814C105F2F2F433800055263 /* NawafilAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NawafilAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		814C10692F2F433800055263 /* NawafilAppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NawafilAppUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		C17498AB2F3A94B00044C6C3 /* TsbeehWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = TsbeehWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		C17498AD2F3A94B00044C6C3 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
+		C17498AF2F3A94B00044C6C3 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
+		C17498C62F3A988E0044C6C3 /* TsbeehWidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TsbeehWidgetExtension.entitlements; sourceTree = "<group>"; };
 /* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		C17498C32F3A94B10044C6C3 /* Exceptions for "TsbeehWidget" folder in "TsbeehWidgetExtension" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = C17498AA2F3A94B00044C6C3 /* TsbeehWidgetExtension */;
+		};
+		C17498CA2F3A9B930044C6C3 /* Exceptions for "NawafilApp" folder in "TsbeehWidgetExtension" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Design.swift,
+				ProgressRing.swift,
+				TasbeehStore.swift,
+			);
+			target = C17498AA2F3A94B00044C6C3 /* TsbeehWidgetExtension */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		814C10542F2F433800055263 /* NawafilApp */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				C17498CA2F3A9B930044C6C3 /* Exceptions for "NawafilApp" folder in "TsbeehWidgetExtension" target */,
+			);
 			path = NawafilApp;
 			sourceTree = "<group>";
 		};
@@ -43,6 +96,14 @@
 		814C106C2F2F433800055263 /* NawafilAppUITests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = NawafilAppUITests;
+			sourceTree = "<group>";
+		};
+		C17498B12F3A94B00044C6C3 /* TsbeehWidget */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				C17498C32F3A94B10044C6C3 /* Exceptions for "TsbeehWidget" folder in "TsbeehWidgetExtension" target */,
+			);
+			path = TsbeehWidget;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -69,15 +130,27 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		C17498A82F3A94B00044C6C3 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C17498B02F3A94B00044C6C3 /* SwiftUI.framework in Frameworks */,
+				C17498AE2F3A94B00044C6C3 /* WidgetKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
 		814C10492F2F433800055263 = {
 			isa = PBXGroup;
 			children = (
+				C17498C62F3A988E0044C6C3 /* TsbeehWidgetExtension.entitlements */,
 				814C10542F2F433800055263 /* NawafilApp */,
 				814C10622F2F433800055263 /* NawafilAppTests */,
 				814C106C2F2F433800055263 /* NawafilAppUITests */,
+				C17498B12F3A94B00044C6C3 /* TsbeehWidget */,
+				C17498AC2F3A94B00044C6C3 /* Frameworks */,
 				814C10532F2F433800055263 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -88,8 +161,18 @@
 				814C10522F2F433800055263 /* NawafilApp.app */,
 				814C105F2F2F433800055263 /* NawafilAppTests.xctest */,
 				814C10692F2F433800055263 /* NawafilAppUITests.xctest */,
+				C17498AB2F3A94B00044C6C3 /* TsbeehWidgetExtension.appex */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		C17498AC2F3A94B00044C6C3 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				C17498AD2F3A94B00044C6C3 /* WidgetKit.framework */,
+				C17498AF2F3A94B00044C6C3 /* SwiftUI.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -102,10 +185,12 @@
 				814C104E2F2F433800055263 /* Sources */,
 				814C104F2F2F433800055263 /* Frameworks */,
 				814C10502F2F433800055263 /* Resources */,
+				C17498C02F3A94B10044C6C3 /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				C17498BE2F3A94B10044C6C3 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				814C10542F2F433800055263 /* NawafilApp */,
@@ -163,6 +248,28 @@
 			productReference = 814C10692F2F433800055263 /* NawafilAppUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
+		C17498AA2F3A94B00044C6C3 /* TsbeehWidgetExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C17498C42F3A94B10044C6C3 /* Build configuration list for PBXNativeTarget "TsbeehWidgetExtension" */;
+			buildPhases = (
+				C17498A72F3A94B00044C6C3 /* Sources */,
+				C17498A82F3A94B00044C6C3 /* Frameworks */,
+				C17498A92F3A94B00044C6C3 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				C17498B12F3A94B00044C6C3 /* TsbeehWidget */,
+			);
+			name = TsbeehWidgetExtension;
+			packageProductDependencies = (
+			);
+			productName = TsbeehWidgetExtension;
+			productReference = C17498AB2F3A94B00044C6C3 /* TsbeehWidgetExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -184,6 +291,9 @@
 						CreatedOnToolsVersion = 26.2;
 						TestTargetID = 814C10512F2F433800055263;
 					};
+					C17498AA2F3A94B00044C6C3 = {
+						CreatedOnToolsVersion = 26.2;
+					};
 				};
 			};
 			buildConfigurationList = 814C104D2F2F433800055263 /* Build configuration list for PBXProject "NawafilApp" */;
@@ -203,6 +313,7 @@
 				814C10512F2F433800055263 /* NawafilApp */,
 				814C105E2F2F433800055263 /* NawafilAppTests */,
 				814C10682F2F433800055263 /* NawafilAppUITests */,
+				C17498AA2F3A94B00044C6C3 /* TsbeehWidgetExtension */,
 			);
 		};
 /* End PBXProject section */
@@ -223,6 +334,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		814C10672F2F433800055263 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C17498A92F3A94B00044C6C3 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -253,6 +371,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		C17498A72F3A94B00044C6C3 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -265,6 +390,11 @@
 			isa = PBXTargetDependency;
 			target = 814C10512F2F433800055263 /* NawafilApp */;
 			targetProxy = 814C106A2F2F433800055263 /* PBXContainerItemProxy */;
+		};
+		C17498BE2F3A94B10044C6C3 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = C17498AA2F3A94B00044C6C3 /* TsbeehWidgetExtension */;
+			targetProxy = C17498BD2F3A94B10044C6C3 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -395,9 +525,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = NawafilApp/NawafilApp.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 723QH6KYHD;
+				DEVELOPMENT_TEAM = BY7KD87586;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -427,9 +558,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = NawafilApp/NawafilApp.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 723QH6KYHD;
+				DEVELOPMENT_TEAM = BY7KD87586;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -538,6 +670,68 @@
 			};
 			name = Release;
 		};
+		C17498C12F3A94B10044C6C3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_ENTITLEMENTS = TsbeehWidgetExtension.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = BY7KD87586;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = TsbeehWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = TsbeehWidget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = NawafilApp.com.NawafilApp.TsbeehWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		C17498C22F3A94B10044C6C3 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_ENTITLEMENTS = TsbeehWidgetExtension.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = BY7KD87586;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = TsbeehWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = TsbeehWidget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = NawafilApp.com.NawafilApp.TsbeehWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -573,6 +767,15 @@
 			buildConfigurations = (
 				814C107A2F2F433800055263 /* Debug */,
 				814C107B2F2F433800055263 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C17498C42F3A94B10044C6C3 /* Build configuration list for PBXNativeTarget "TsbeehWidgetExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C17498C12F3A94B10044C6C3 /* Debug */,
+				C17498C22F3A94B10044C6C3 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

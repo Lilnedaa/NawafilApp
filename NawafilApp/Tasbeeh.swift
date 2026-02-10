@@ -9,12 +9,14 @@
 
 
 import SwiftUI
+import WidgetKit
 
 struct Tsbeeh: View {
     
     
        let total = 100
-    @AppStorage("tasbeeh_count") private var count = 100
+    @AppStorage("tasbeeh_count", store: UserDefaults(suiteName: "group.com.wessal.nawafil"))
+    private var count: Int = 0
     var progress: Double {
            Double(count) / Double(total)
        }
@@ -25,7 +27,7 @@ struct Tsbeeh: View {
             // clander
             
             
-            TasbeehCalendarPage(count: $count, total: total)
+          //  TasbeehCalendarPage(count: $count, total: total)
             
             ZStack {
 
@@ -47,7 +49,7 @@ struct Tsbeeh: View {
             // الأزرار
               HStack(spacing: 200) {
                   Button {
-                      count = 0
+                      TasbeehStore.reset()
                   } label: {
                       Image(systemName: "arrow.counterclockwise")
                           .font(.title2).foregroundStyle(Color(.white))
@@ -58,8 +60,10 @@ struct Tsbeeh: View {
                   
                   Button {
                       
-                          count += 1
-                      
+                      TasbeehStore.increment()
+                      WidgetCenter.shared.reloadAllTimelines()
+
+
                   } label: {
                       Image(systemName: "plus")
                           .font(.title2).foregroundStyle(Color(.white))
