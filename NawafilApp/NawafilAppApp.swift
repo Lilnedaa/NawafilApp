@@ -11,7 +11,7 @@ import SwiftUI
 struct NawafilAppApp: App {
     var body: some Scene {
         WindowGroup {
-            Tsbeeh()
+            PrayerTimesView()
         }
     }
 }

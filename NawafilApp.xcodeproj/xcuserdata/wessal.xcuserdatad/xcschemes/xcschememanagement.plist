@@ -7,12 +7,27 @@
 		<key>NawafilApp.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>0</integer>
+			<integer>1</integer>
 		</dict>
 		<key>TsbeehWidgetExtension.xcscheme_^#shared#^_</key>
 		<dict>
+			<key>isShown</key>
+			<true/>
 			<key>orderHint</key>
 			<integer>0</integer>
+		</dict>
+	</dict>
+	<key>SuppressBuildableAutocreation</key>
+	<dict>
+		<key>814C10512F2F433800055263</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>C17498AA2F3A94B00044C6C3</key>
+		<dict>
+			<key>primary</key>
+			<true/>
 		</dict>
 	</dict>
 </dict>
