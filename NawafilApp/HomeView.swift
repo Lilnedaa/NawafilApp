@@ -106,11 +106,11 @@ struct HomeView: View {
                 VStack(alignment: .trailing, spacing: 4) {
                     Text(top)
                         .font(.custom("SF Arabic", size: 14).weight(.regular))
-                        .foregroundStyle(.white.opacity(0.55))
+                        .foregroundStyle(.baje.opacity(0.55))
                     
                     Text(title)
                         .font(.custom("SF Arabic", size: 20).weight(.bold))
-                        .foregroundStyle(.white)
+                        .foregroundStyle(.baje)
                         .minimumScaleFactor(0.85)
                 }
                 .frame(maxWidth: .infinity, alignment: .trailing)
@@ -121,7 +121,6 @@ struct HomeView: View {
             .background(
                 RoundedRectangle(cornerRadius: 20)
                     .fill(buttonColor)
-                    .shadow(color: .white, radius: 2, x: 0, y: 1)
             )
         }
         .buttonStyle(.plain)

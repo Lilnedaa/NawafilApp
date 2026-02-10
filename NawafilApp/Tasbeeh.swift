@@ -23,7 +23,6 @@ struct Tsbeeh: View {
     
     var body: some View {
         VStack{
-            
             // clander
             
             

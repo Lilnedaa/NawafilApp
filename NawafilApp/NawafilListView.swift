@@ -11,7 +11,7 @@ import SwiftUI
 struct NawafilListView: View {
     let title: String
     let description: String
-    let items: [String]
+    let items: [NawafilItem]
 
     var body: some View {
         NavigationStack {
@@ -19,7 +19,7 @@ struct NawafilListView: View {
                 backgroundColor
                     .ignoresSafeArea()
                 
-                VStack(spacing: 0) {
+                VStack(spacing:0) {
                     Text(title)
                         .font(.system(size: 48, weight: .bold, design: .default))
                         .font(.custom("SF Arabic Pro", size: 48))
@@ -40,8 +40,8 @@ struct NawafilListView: View {
                         .frame(height: 50)
                     
                     VStack(spacing: 16) {
-                        ForEach(items, id: \.self) { item in
-                            CButton(title: item)
+                        ForEach(items) { item in
+                            CButton(item: item)
                         }
                     }
                     .padding(.horizontal, 40)
@@ -60,6 +60,17 @@ struct NawafilListView: View {
     }
 }
 
+// Model
+struct NawafilItem: Identifiable {
+    let id = UUID()
+    let title: String
+    let topic: NawafilTopic
+    
+    init(title: String, topic: NawafilTopic) {
+        self.title = title
+        self.topic = topic
+    }
+}
 
 
 struct SalahView: View {
@@ -68,12 +79,12 @@ struct SalahView: View {
             title: "الصلاة",
             description: "الصيام عبادة يقوم فيها المسلم بالإمساك عن الطعام والشراب وكل ما يُفطر من طلوع الفجر حتى غروب الشمس",
             items: [
-                "قيام الليل",
-                "صلاة الضحى",
-                "سنة الفجر",
-                "سنة الظهر",
-                "سنة المغرب",
-                "سنة العشاء"
+                NawafilItem(title: "قيام الليل", topic: .qiyam),
+                NawafilItem(title: "صلاة الضحى", topic: .dhuha),
+                NawafilItem(title: "سنة الفجر", topic: .sunnahFajr),
+                NawafilItem(title: "سنة الظهر", topic: .sunnahDhuhr),
+                NawafilItem(title: "سنة المغرب", topic: .sunnahMaghrib),
+                NawafilItem(title: "سنة العشاء", topic: .sunnahIsha)
             ]
         )
     }
@@ -85,11 +96,11 @@ struct SiamView: View {
             title: "الصيام",
             description: "الصيام عبادة يقوم فيها المسلم بالإمساك عن الطعام والشراب وكل ما يُفطر من طلوع الفجر حتى غروب الشمس",
             items: [
-                "صيام الاثنين والخميس",
-                "صيام الأيام البيض",
-                "صيام يوم عرفة",
-                "صيام يوم عاشوراء",
-                "صيام ستة من شوال"
+                NawafilItem(title: "صيام الاثنين والخميس", topic: .mondayThursday),
+                NawafilItem(title: "صيام الأيام البيض", topic: .whiteDays),
+                NawafilItem(title: "صيام يوم عرفة", topic: .arafah),
+                NawafilItem(title: "صيام يوم عاشوراء", topic: .ashura),
+                NawafilItem(title: "صيام ستة من شوال", topic: .shawwal)
             ]
         )
     }
@@ -97,16 +108,11 @@ struct SiamView: View {
 
 
 struct CButton: View {
-    let title: String
+    let item: NawafilItem  
     
     var body: some View {
-        NavigationLink(
-            destination: ContentView(
-                title: title,
-                cards: sampleCards(for: title)
-            )
-        ) {
-            Text(title)
+        NavigationLink(destination: ContentView(topic: item.topic)) {
+            Text(item.title)
                 .font(.system(size: 25, weight: .bold, design: .default))
                 .foregroundColor(.baje)
                 .frame(maxWidth: .infinity, alignment: .leading)
@@ -114,9 +120,8 @@ struct CButton: View {
                 .frame(height: 56)
                 .background(.zaeity)
                 .cornerRadius(27)
-//                .glassEffect()
+                .environment(\.layoutDirection, .rightToLeft)
         }
-        .environment(\.layoutDirection, .rightToLeft)
     }
 }
 
@@ -125,13 +130,12 @@ struct CButton: View {
         title: "الصلاة",
         description: " الصلاة عبادة يقوم فيها المسلم بالسجود والركوع ",
         items: [
-            " قيام الليل",
-            " سنة الفجر",
-            " سنة الظهر",
-            "سنة المغرب",
-            "سنة العشاء",
-            "صلاة الضحى"
+            NawafilItem(title: "قيام الليل", topic: .qiyam),
+            NawafilItem(title: "سنة الفجر", topic: .sunnahFajr),
+            NawafilItem(title: "سنة الظهر", topic: .sunnahDhuhr),
+            NawafilItem(title: "سنة المغرب", topic: .sunnahMaghrib),
+            NawafilItem(title: "سنة العشاء", topic: .sunnahIsha),
+            NawafilItem(title: "صلاة الضحى", topic: .dhuha)
         ]
     )
 }
-
