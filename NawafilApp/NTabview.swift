@@ -18,7 +18,14 @@ struct NTabview: View {
        TabView(selection: $selectedTab) {
 
             
-            ContentView()
+           ContentView(
+               title: "صلاة الضحى",
+               cards: [
+                   CardData(title: "حكمها", content: "صلاة الضحى سنة أوصى بها النبي ﷺ بعض أصحابه، وفعلها في بعض الأحيان -عليه الصلاة والسلام- وفعلها يوم الفتح، صلى ثمان ركعات الضحى يوم الفتح، فهي سنة مؤكدة."),
+                   CardData(title: "وقتها", content: "يبدأ وقت صلاة الضحى من ارتفاع الشمس قدر رمح، أي بعد شروق الشمس بنحو ربع ساعة، ويمتد إلى قبيل صلاة الظهر."),
+                   CardData(title: "عدد ركعاتها", content: "أقلها ركعتان، وأوسطها أربع ركعات، وأفضلها ثمان ركعات، وأكثرها اثنتا عشرة ركعة.")
+               ]
+           )
                 .tabItem{
                  Image("Tracker")
                                    .renderingMode(.template)

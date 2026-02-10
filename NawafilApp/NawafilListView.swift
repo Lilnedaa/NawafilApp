@@ -55,8 +55,9 @@ struct NawafilListView: View {
             }
             .navigationBarHidden(true)
         }
-           // .navigationBarHidden(true)
-        }
+        .environment(\.layoutDirection, .rightToLeft)
+        .environment(\.locale, Locale(identifier: "ar"))
+    }
 }
 
 
@@ -99,32 +100,23 @@ struct CButton: View {
     let title: String
     
     var body: some View {
-        NavigationLink(destination: ContentView()) {
+        NavigationLink(
+            destination: ContentView(
+                title: title,
+                cards: sampleCards(for: title)
+            )
+        ) {
             Text(title)
                 .font(.system(size: 25, weight: .bold, design: .default))
-//                .font(.custom("SF Arabic Pro", size: 25))
-//                .fontWeight(.bold)
-                .foregroundColor(.white)
-                .multilineTextAlignment(.trailing)
-                .frame(maxWidth: .infinity, alignment: .trailing)
-                .padding(.trailing, 40)
+                .foregroundColor(.baje)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(.leading, 16)
                 .frame(height: 56)
-                .background(
-                    LinearGradient(
-                        gradient: Gradient(colors: [
-                            backgroundColor.opacity(0.3),
-                            backgroundColor.opacity(0.15)
-                        ]),
-                        startPoint: .leading,
-                        endPoint: .trailing
-                    )
-                )
-                .background(buttonColor)
+                .background(.zaeity)
                 .cornerRadius(27)
-                .glassEffect()
-                //.cornerRadius(12)
-        }.navigationTitle("الصلاة").navigationBarTitleDisplayMode(.inline)
-
+//                .glassEffect()
+        }
+        .environment(\.layoutDirection, .rightToLeft)
     }
 }
 
