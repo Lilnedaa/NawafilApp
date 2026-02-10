@@ -28,7 +28,7 @@ struct NTabview: View {
             
             
             
-           SalahView()
+           HomeView()
                 .tabItem{
                     Image("Kaaba")
                                    .renderingMode(.template)

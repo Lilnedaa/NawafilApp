@@ -27,7 +27,7 @@ struct Tsbeeh: View {
             // clander
             
             
-           TasbeehCalendarPage(count: $count, total: total)
+        //   TasbeehCalendarPage(count: $count, total: total)
             
             ZStack {
 
