@@ -14,6 +14,5 @@ struct TsbeehWidgetBundle: WidgetBundle {
         TsbeehWidget()
         TsbeehWidgetControl()
         TsbeehWidgetLiveActivity()
-        HomeTsbeehWidget()
     }
 }

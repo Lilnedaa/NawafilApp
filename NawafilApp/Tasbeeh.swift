@@ -27,7 +27,7 @@ struct Tsbeeh: View {
             // clander
             
             
-          //  TasbeehCalendarPage(count: $count, total: total)
+           TasbeehCalendarPage(count: $count, total: total)
             
             ZStack {
 
@@ -50,6 +50,8 @@ struct Tsbeeh: View {
               HStack(spacing: 200) {
                   Button {
                       TasbeehStore.reset()
+                      WidgetCenter.shared.reloadAllTimelines()
+
                   } label: {
                       Image(systemName: "arrow.counterclockwise")
                           .font(.title2).foregroundStyle(Color(.white))
