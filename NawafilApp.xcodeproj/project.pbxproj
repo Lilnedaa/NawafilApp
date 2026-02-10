@@ -51,7 +51,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		814C10522F2F433800055263 /* NawafilApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NawafilApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		814C10522F2F433800055263 /* نافل.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "نافل.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		814C105F2F2F433800055263 /* NawafilAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NawafilAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		814C10692F2F433800055263 /* NawafilAppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NawafilAppUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C17498AB2F3A94B00044C6C3 /* TsbeehWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = TsbeehWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -158,7 +158,7 @@
 		814C10532F2F433800055263 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				814C10522F2F433800055263 /* NawafilApp.app */,
+				814C10522F2F433800055263 /* نافل.app */,
 				814C105F2F2F433800055263 /* NawafilAppTests.xctest */,
 				814C10692F2F433800055263 /* NawafilAppUITests.xctest */,
 				C17498AB2F3A94B00044C6C3 /* TsbeehWidgetExtension.appex */,
@@ -178,9 +178,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		814C10512F2F433800055263 /* NawafilApp */ = {
+		814C10512F2F433800055263 /* نافل */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 814C10732F2F433800055263 /* Build configuration list for PBXNativeTarget "NawafilApp" */;
+			buildConfigurationList = 814C10732F2F433800055263 /* Build configuration list for PBXNativeTarget "نافل" */;
 			buildPhases = (
 				814C104E2F2F433800055263 /* Sources */,
 				814C104F2F2F433800055263 /* Frameworks */,
@@ -195,11 +195,11 @@
 			fileSystemSynchronizedGroups = (
 				814C10542F2F433800055263 /* NawafilApp */,
 			);
-			name = NawafilApp;
+			name = "نافل";
 			packageProductDependencies = (
 			);
 			productName = NawafilApp;
-			productReference = 814C10522F2F433800055263 /* NawafilApp.app */;
+			productReference = 814C10522F2F433800055263 /* نافل.app */;
 			productType = "com.apple.product-type.application";
 		};
 		814C105E2F2F433800055263 /* NawafilAppTests */ = {
@@ -310,7 +310,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				814C10512F2F433800055263 /* NawafilApp */,
+				814C10512F2F433800055263 /* نافل */,
 				814C105E2F2F433800055263 /* NawafilAppTests */,
 				814C10682F2F433800055263 /* NawafilAppUITests */,
 				C17498AA2F3A94B00044C6C3 /* TsbeehWidgetExtension */,
@@ -383,12 +383,12 @@
 /* Begin PBXTargetDependency section */
 		814C10612F2F433800055263 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 814C10512F2F433800055263 /* NawafilApp */;
+			target = 814C10512F2F433800055263 /* نافل */;
 			targetProxy = 814C10602F2F433800055263 /* PBXContainerItemProxy */;
 		};
 		814C106B2F2F433800055263 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 814C10512F2F433800055263 /* NawafilApp */;
+			target = 814C10512F2F433800055263 /* نافل */;
 			targetProxy = 814C106A2F2F433800055263 /* PBXContainerItemProxy */;
 		};
 		C17498BE2F3A94B10044C6C3 /* PBXTargetDependency */ = {
@@ -529,7 +529,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = RP25T56Z9T;
+				DEVELOPMENT_TEAM = BY7KD87586;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "";
@@ -543,7 +543,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.nawafil.app;
+				PRODUCT_BUNDLE_IDENTIFIER = com.wessal.nawafil.app;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
@@ -565,7 +565,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = RP25T56Z9T;
+				DEVELOPMENT_TEAM = BY7KD87586;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "";
@@ -579,7 +579,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.nawafil.app;
+				PRODUCT_BUNDLE_IDENTIFIER = com.wessal.nawafil.app;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
@@ -684,7 +684,7 @@
 				CODE_SIGN_ENTITLEMENTS = TsbeehWidgetExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = RP25T56Z9T;
+				DEVELOPMENT_TEAM = BY7KD87586;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = TsbeehWidget/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = TsbeehWidget;
@@ -695,7 +695,7 @@
 					"@executable_path/../../Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.nawafil.app.widget;
+				PRODUCT_BUNDLE_IDENTIFIER = com.wessal.nawafil.app.widget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
@@ -715,7 +715,7 @@
 				CODE_SIGN_ENTITLEMENTS = TsbeehWidgetExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = RP25T56Z9T;
+				DEVELOPMENT_TEAM = BY7KD87586;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = TsbeehWidget/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = TsbeehWidget;
@@ -726,7 +726,7 @@
 					"@executable_path/../../Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.nawafil.app.widget;
+				PRODUCT_BUNDLE_IDENTIFIER = com.wessal.nawafil.app.widget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
@@ -750,7 +750,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		814C10732F2F433800055263 /* Build configuration list for PBXNativeTarget "NawafilApp" */ = {
+		814C10732F2F433800055263 /* Build configuration list for PBXNativeTarget "نافل" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				814C10742F2F433800055263 /* Debug */,

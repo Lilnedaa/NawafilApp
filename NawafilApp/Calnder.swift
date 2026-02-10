@@ -46,6 +46,7 @@ struct TasbeehCalendarPage: View {
             selectedDate = Date()
             markSelectedIfCompleted()
         }
+        .gesture(horizontalWeekPagingGesture)
         .onChange(of: count) { _ in
             markSelectedIfCompleted()
         }
@@ -140,8 +141,8 @@ struct TasbeehCalendarPage: View {
         .padding(.horizontal, 16)
         .frame(height: 120)
     }
-
-    // MARK: Gesture (سحب يمين/يسار للتنقل بين الأسابيع)
+    
+    
     private var horizontalWeekPagingGesture: some Gesture {
         DragGesture(minimumDistance: 15)
             .onEnded { value in
@@ -149,12 +150,39 @@ struct TasbeehCalendarPage: View {
                 guard abs(w) > 50 else { return }
 
                 if w < 0 {
-                    goNextWeek()
+                    // سحب يسار → اليوم التالي (داخل نفس الأسبوع)
+                    goNextDayWithinWeek()
                 } else {
-                    goPreviousWeek()
+                    // سحب يمين → اليوم السابق (داخل نفس الأسبوع)
+                    goPreviousDayWithinWeek()
                 }
             }
     }
+
+
+    // MARK: Gesture (سحب يمين/يسار للتنقل بين الأسابيع)
+    private func goNextDayWithinWeek() {
+        let week = weekDates(containing: displayDate)
+        guard let idx = week.firstIndex(where: { Calendar.sa.isDate($0, inSameDayAs: selectedDate) }) else { return }
+        guard idx < week.count - 1 else { return } // ✅ لا يطلع من الأسبوع
+
+        let next = week[idx + 1]
+        selectedDate = next
+        displayDate = next
+        markSelectedIfCompleted()
+    }
+
+    private func goPreviousDayWithinWeek() {
+        let week = weekDates(containing: displayDate)
+        guard let idx = week.firstIndex(where: { Calendar.sa.isDate($0, inSameDayAs: selectedDate) }) else { return }
+        guard idx > 0 else { return } // ✅ لا يطلع من الأسبوع
+
+        let prev = week[idx - 1]
+        selectedDate = prev
+        displayDate = prev
+        markSelectedIfCompleted()
+    }
+
 
     // MARK: Navigation (Week only)
     private func goNextWeek() {
@@ -545,4 +573,11 @@ private extension Calendar {
         c.firstWeekday = 7
         return c
     }
+    
+    
+    
+    
 }
+
+
+
