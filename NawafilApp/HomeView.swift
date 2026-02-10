@@ -86,6 +86,7 @@ struct HomeView: View {
                     } label: {
                         Image(systemName: "bell.fill")
                             .foregroundColor(textColor)
+    
                     }
                 }
             }
