@@ -58,8 +58,7 @@ struct NotfView: View {
                 }
                 
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    Button(action: {
-                    }) {
+                    NavigationLink(destination: HomeView()) {
                         Image(systemName: "chevron.right")
                             .font(.system(size: 20, weight: .semibold))
                             .foregroundColor(Color.black)
@@ -101,7 +100,7 @@ struct NotificationCard: View {
                 }
             }
         }
-        .background(buttonColor)
+        .background(.zaeity)
         .cornerRadius(30)
     }
 }
