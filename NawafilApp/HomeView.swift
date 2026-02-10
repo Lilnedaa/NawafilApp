@@ -81,7 +81,7 @@ struct HomeView: View {
             }
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    NavigationLink(destination: NotfView()) {
+                    NavigationLink(destination: HomeView()) {
                         Image(systemName: "bell.fill")
                             .foregroundColor(textColor)
     

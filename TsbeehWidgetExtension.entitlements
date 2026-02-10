@@ -4,7 +4,7 @@
 <dict>
 	<key>com.apple.security.application-groups</key>
 	<array>
-		<string>group.com.wessal.nawafil</string>
+		<string>group.com.nawafil.widget</string>
 	</array>
 </dict>
 </plist>
