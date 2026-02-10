@@ -37,29 +37,35 @@ extension NotificationManager {
     
 //بخلي الصدقة كل يوم عالعصر
     func scheduleSadaqaNotification(asrTime: String) {
+        let center = UNUserNotificationCenter.current()
+
+        // احذف القديم
+        center.removePendingNotificationRequests(withIdentifiers: ["sadaqa_test"])
+
         let content = UNMutableNotificationContent()
         content.title = "تذكير الصدقة"
-        content.body = "مانقص مال من صدقة "
+        content.body = "لا تنسى تتصدق اليوم بليز"
         content.sound = .default
-        // ← اختبار: بعد دقيقة من الحين
+
         let trigger = UNTimeIntervalNotificationTrigger(
-            timeInterval: 60, // بعد 60 ثانية
-            repeats: false
+            timeInterval: 60,
+            repeats: true
         )
-        
+
         let request = UNNotificationRequest(
             identifier: "sadaqa_test",
             content: content,
             trigger: trigger
         )
-        
-        UNUserNotificationCenter.current().add(request) { error in
+
+        center.add(request) { error in
             if let error = error {
-                print("❌ خطأ: \(error)")
+                print(" Error:", error)
             } else {
-                print("✅ تم جدولة تذكير الصدقة - سيصل بعد دقيقة")
+                print(" Notification scheduled")
             }
         }
+
         
 //        if let time = parseTime(asrTime) {
 //            var dateComponents = DateComponents()

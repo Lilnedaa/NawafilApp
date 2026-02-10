@@ -126,23 +126,27 @@ struct NotfNotificationsView: View {
             .toolbarBackground(backgroundColor, for: .navigationBar)
             .toolbarBackground(.visible, for: .navigationBar)
             .onAppear {
-                checkPendingNotifications()
-//                Task {
-//                    let granted = await notificationManager.requestPermission()
-//                    if granted {
-//                        print("الإشعارات")
-//                        prayerVM.startLocationFlow()
-//                    } else {
-//                        print(" بدون الإشعارات")
-//                    }
-//                }
+                Task {
+                    let granted = await notificationManager.requestPermission()
+                    if granted {
+                        print(" تم الإشعارات")
+                        prayerVM.startLocationFlow()
+                    } else {
+                        print(" رفض الإشعارات")
+                    }
+                }
+                
+                // بعد ثانيتين، تحقق من الإشعارات المجدولة
+                DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                    checkPendingNotifications()
+                }
             }
         }
     }
     
     private func checkPendingNotifications() {
         UNUserNotificationCenter.current().getPendingNotificationRequests { requests in
-            print("📋 عدد الإشعارات المجدولة: \(requests.count)")
+            print(" عدد الإشعارات المجدولة: \(requests.count)")
             for request in requests {
                 print("  - \(request.identifier): \(request.content.title)")
             }

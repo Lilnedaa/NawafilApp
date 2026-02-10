@@ -9,9 +9,10 @@ import SwiftUI
 
 @main
 struct NawafilAppApp: App {
+
     var body: some Scene {
         WindowGroup {
-            PrayerTimesView()
+            NotfNotificationsView()
         }
     }
 }
