@@ -18,7 +18,7 @@ struct NTabview: View {
        TabView(selection: $selectedTab) {
 
             
-           ContentView(topic: .dhuha)
+           ContentView(topic: .duha)
                 .tabItem{
                  Image("Tracker")
                                    .renderingMode(.template)

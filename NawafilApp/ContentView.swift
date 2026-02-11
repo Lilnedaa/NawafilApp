@@ -121,5 +121,5 @@ struct CardView: View {
 
 
 #Preview {
-    ContentView(topic: .dhuha)
+    ContentView(topic: .duha)
 }
