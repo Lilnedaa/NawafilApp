@@ -1,41 +1,33 @@
-//
-//  Untitled.swift
-//  NawafilApp
-//
-//  Created by Eatzaz Hafiz on 07/02/2026.
-//
-
 import SwiftUI
-
 
 struct ContentView: View {
     @StateObject private var viewModel: ContentViewModel
 
-        init(topic: NawafilTopic) {
-            _viewModel = StateObject(
-                wrappedValue: ContentViewModel(topic: topic)
-            )
-        }
+    init(topic: NawafilTopic) {
+        _viewModel = StateObject(
+            wrappedValue: ContentViewModel(topic: topic)
+        )
+    }
 
     var body: some View {
         NavigationStack {
             ZStack {
                 Color.background
                     .ignoresSafeArea()
-                VStack(spacing: 20) {
+                VStack(spacing: 15) {
 
                     Text(viewModel.pageTitle)
-                        .font(.system(size: 40, weight: .bold))
+                        .font(.system(size: 36, weight: .bold))
                         .foregroundColor(.darkgreen)
-                        .padding(.top, 20)
+                        .padding(.top, 10)
+                        .padding(.bottom, 5)
 
                     TabView(selection: $viewModel.currentIndex) {
-                        ForEach(Array(viewModel.cards.enumerated()),
-                                id: \.element.id) { index, card in
+                        ForEach(Array(viewModel.cards.enumerated()), id: \.element.id) { index, card in
                             GeometryReader { geo in
                                 let minX = geo.frame(in: .global).minX
                                 let screenWidth = UIScreen.main.bounds.width
-                                let offset = minX - (screenWidth / 2 - 270 / 2)
+                                let offset = minX - (screenWidth / 2 - 280 / 2)
                                 let absOffset = abs(offset)
 
                                 let scale = 1 - min(absOffset / screenWidth, 0.12)
@@ -49,7 +41,7 @@ struct ContentView: View {
                                 .offset(y: verticalOffset)
                                 .frame(width: geo.size.width, height: geo.size.height)
                             }
-                            .frame(width: 270, height: 480)
+                            .frame(width: 280, height: 500)
                             .tag(index)
                         }
                     }
@@ -89,35 +81,31 @@ struct CardView: View {
         ZStack {
             RoundedRectangle(cornerRadius: 20)
                 .fill(Color.zaeity)
-                .frame(width: 270, height: 480)
+                .frame(width: 280, height: 500)
             
-            VStack(spacing: 20) {
-                
+            VStack(spacing: 15) {
                 Text(title)
                     .foregroundColor(.baje)
-//                    .font(.custom("SF Arabic", size: 36))
-                    .font(.system(size: 36, weight: .bold))
-//                    .foregroundColor(.textcolor)
-                    .padding(.top, 40)
+                    .font(.system(size: 34, weight: .bold))
+                    .padding(.top, 30)
+
                 
                 Spacer()
                 
-                    Text(content)
-                        .foregroundColor(.baje)
-                        .font(.system(size: 18))
-                        .multilineTextAlignment(.center)
-                        .lineSpacing(10)
-                        .padding(.horizontal, 20)
-                .frame(maxHeight: 260)
+                Text(content)
+                    .foregroundColor(.baje)
+                    .font(.system(size: 17, weight: .medium))
+                    .multilineTextAlignment(.center)
+                    .lineSpacing(8)
+                    .padding(.horizontal, 25)
+                    .frame(maxHeight: 300)
 
                 Spacer(minLength: 20)
             }
-            .frame(width: 270, height: 480)
+            .frame(width: 280, height: 500)
         }
     }
 }
-
-
 
 
 #Preview {
