@@ -67,6 +67,7 @@
 				Design.swift,
 				ProgressRing.swift,
 				TasbeehStore.swift,
+				Tracker.swift,
 			);
 			target = C17498AA2F3A94B00044C6C3 /* TsbeehWidgetExtension */;
 		};

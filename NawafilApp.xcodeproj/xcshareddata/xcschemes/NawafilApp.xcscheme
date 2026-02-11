@@ -16,8 +16,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "814C10512F2F433800055263"
-               BuildableName = "&#x646;&#x627;&#x641;&#x644;.app"
-               BlueprintName = "&#x646;&#x627;&#x641;&#x644;"
+               BuildableName = "NawafilApp.app"
+               BlueprintName = "NawafilApp"
                ReferencedContainer = "container:NawafilApp.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -45,8 +45,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "814C10512F2F433800055263"
-            BuildableName = "&#x646;&#x627;&#x641;&#x644;.app"
-            BlueprintName = "&#x646;&#x627;&#x641;&#x644;"
+            BuildableName = "NawafilApp.app"
+            BlueprintName = "NawafilApp"
             ReferencedContainer = "container:NawafilApp.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
@@ -62,8 +62,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "814C10512F2F433800055263"
-            BuildableName = "&#x646;&#x627;&#x641;&#x644;.app"
-            BlueprintName = "&#x646;&#x627;&#x641;&#x644;"
+            BuildableName = "NawafilApp.app"
+            BlueprintName = "NawafilApp"
             ReferencedContainer = "container:NawafilApp.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
