@@ -3,7 +3,6 @@
 //  NawafilApp
 //
 //  Created by Rana on 20/08/1447 AH.
-//
 
 import SwiftUI
 import Combine
@@ -15,7 +14,7 @@ struct HomeView: View {
         NavigationStack {
             ZStack(alignment: .bottom) {
                 backgroundColor.ignoresSafeArea()
-                
+
                 ScrollView(showsIndicators: false) {
                     VStack(spacing: 14) {
                         // Header
@@ -23,14 +22,14 @@ struct HomeView: View {
                             Text(vm.hijriDateText)
                                 .font(.system(size: 24, weight: .bold))
                                 .foregroundStyle(textColor)
-                            
+
                             Text(vm.timeText)
                                 .font(.custom("SF Arabic", size: 16).weight(.regular))
                                 .foregroundStyle(textColor.opacity(0.7))
                         }
                         .frame(maxWidth: .infinity)
                         .multilineTextAlignment(.center)
-                        
+
                         // Buttons with Swipe
                         VStack(spacing: 12) {
                             TabView(selection: $vm.selectedIndex) {
@@ -49,10 +48,10 @@ struct HomeView: View {
                             }
                             .tabViewStyle(.page(indexDisplayMode: .never))
                             .frame(height: 68)
-                            
+
                             // Dots (Dynamic)
                             HStack(spacing: 6) {
-                                ForEach(0..<vm.events.count, id: \.self) { i in
+                                ForEach(0..<max(vm.events.count, 1), id: \.self) { i in
                                     Circle()
                                         .fill(vm.selectedIndex == i ? textColor.opacity(0.65) : textColor.opacity(0.35))
                                         .frame(width: 7, height: 7)
@@ -63,26 +62,43 @@ struct HomeView: View {
                             }
                         }
                         .padding(.top, 8)
-                        
+
                         Divider()
                             .overlay(textColor.opacity(0.12))
-                        
+
                         // Section Title
                         Text("العبادات")
                             .font(.system(size: 24, weight: .bold))
                             .foregroundStyle(textColor)
                             .frame(maxWidth: .infinity, alignment: .trailing)
                             .padding(.top, 6)
-                        
-                        // Cards
+
+                        // Cards (كلها تفتح نفس صفحة النوافل)
                         VStack(spacing: 14) {
-                            cardButton("image1", "الصلاة", "القليل دائم خير")
-                            cardButton("image2", "الصيام", "سنن تقربك إلى الله")
-                            cardButton("image", "الصدقة", "طمأنينة القلب")
-                            cardButton("image3", "الاذكار", "باب للخير ورفع الدرجات")
+
+                            NavigationLink(destination: SalahView()) {
+                                cardContent("image1", "الصلاة", "القليل دائم خير")
+                            }
+                            .buttonStyle(.plain)
+
+                            NavigationLink(destination: SalahView()) {
+                                cardContent("image2", "الصيام", "سنن تقربك إلى الله")
+                            }
+                            .buttonStyle(.plain)
+
+                            NavigationLink(destination: SalahView()) {
+                                cardContent("image", "الصدقة", "طمأنينة القلب")
+                            }
+                            .buttonStyle(.plain)
+
+                            NavigationLink(destination: SalahView()) {
+                                cardContent("image3", "الاذكار", "باب للخير ورفع الدرجات")
+                            }
+                            .buttonStyle(.plain)
                         }
+
                         .padding(.top, 6)
-                        
+
                         Spacer(minLength: 110)
                     }
                     .padding(.horizontal, 20)
@@ -97,14 +113,13 @@ struct HomeView: View {
                     }
                 }
             }
-            
+
             .onAppear {
                 vm.onAppear()
             }
-
         }
     }
-    
+
     // MARK: - Now Pill Button
     func nowPillButton(_ top: String, _ title: String, _ icon: String) -> some View {
         Button {
@@ -114,12 +129,12 @@ struct HomeView: View {
                 Image(systemName: icon)
                     .font(.system(size: 24))
                     .foregroundStyle(Color.white)
-                
+
                 VStack(alignment: .trailing, spacing: 4) {
                     Text(top)
                         .font(.custom("SF Arabic", size: 14).weight(.regular))
                         .foregroundStyle(.baje.opacity(0.55))
-                    
+
                     Text(title)
                         .font(.custom("SF Arabic", size: 20).weight(.bold))
                         .foregroundStyle(.baje)
@@ -138,6 +153,7 @@ struct HomeView: View {
         .buttonStyle(.plain)
         .padding(.horizontal, 30)
     }
+
     func emptyEventPill(_ title: String) -> some View {
         Text(title)
             .font(.system(size: 20, weight: .bold))
@@ -151,49 +167,43 @@ struct HomeView: View {
             .padding(.horizontal, 30)
     }
 
-    
-    // MARK: - Card Button
-    func cardButton(_ image: String, _ title: String, _ subtitle: String) -> some View {
-        Button {
-            print(title)
-        } label: {
-            ZStack(alignment: .topTrailing) {
-                // Image with gradient
-                Image(image)
-                    .resizable()
-                    .scaledToFill()
-                    .frame(height: 150)
-                    .clipShape(RoundedRectangle(cornerRadius: 20))
-                    .overlay {
-                        RoundedRectangle(cornerRadius: 20)
-                            .fill(
-                                LinearGradient(
-                                    colors: [
-                                        .black.opacity(0.05),
-                                        .black.opacity(0.25),
-                                        .black.opacity(0.55)
-                                    ],
-                                    startPoint: .top,
-                                    endPoint: .bottom
-                                )
+    // ✅ نفس تصميم cardButton لكن بدون Button (عشان نستخدمه داخل NavigationLink)
+    func cardContent(_ image: String, _ title: String, _ subtitle: String) -> some View {
+        ZStack(alignment: .topTrailing) {
+            Image(image)
+                .resizable()
+                .scaledToFill()
+                .frame(height: 150)
+                .clipShape(RoundedRectangle(cornerRadius: 20))
+                .overlay(alignment: .bottom) {
+                    RoundedRectangle(cornerRadius: 20)
+                        .fill(
+                            LinearGradient(
+                                colors: [
+                                    Color.white.opacity(0.0),
+                                    Color.white.opacity(0.40),
+                                    Color.white.opacity(0.60)
+                                ],
+                                startPoint: .top,
+                                endPoint: .bottom
                             )
-                    }
-                
-                // Text sections
-                VStack(alignment: .trailing, spacing: 6) {
-                    Text(title)
-                        .font(.system(size: 24, weight: .bold))
-                        .foregroundStyle(Color(backgroundColor))
-                    
-                    Text(subtitle)
-                        .font(.custom("SF Arabic", size: 16))
-                        .foregroundStyle(Color(backgroundColor).opacity(0.9))
+                        )
+                        .frame(height: 70) // تحكمي بارتفاع الشيد هنا
                 }
-                .padding(16)
-                .frame(maxWidth: .infinity, alignment: .trailing)
+
+
+            VStack(alignment: .trailing, spacing: 6) {
+                Text(title)
+                    .font(.system(size: 24, weight: .bold))
+                    .foregroundStyle(Color(backgroundColor))
+
+                Text(subtitle)
+                    .font(.custom("SF Arabic", size: 16))
+                    .foregroundStyle(Color(backgroundColor).opacity(0.9))
             }
+            .padding(16)
+            .frame(maxWidth: .infinity, alignment: .trailing)
         }
-        .buttonStyle(.plain)
     }
 }
 

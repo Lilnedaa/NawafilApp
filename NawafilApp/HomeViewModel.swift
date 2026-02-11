@@ -4,7 +4,6 @@
 //
 //  Created by Rana on 23/08/1447 AH.
 //
-
 import Foundation
 import SwiftUI
 import Combine
@@ -12,7 +11,7 @@ import Combine
 final class HomeViewModel: ObservableObject {
 
     // MARK: - UI Outputs (HomeView uses these without changing design)
-    @Published var hijriDateText: String = "—"
+    @Published var hijriDateText: String = Date().hijriUmmAlQuraString()
     @Published var timeText: String = "—"
 
     @Published var events: [NawafilEvent] = []
@@ -28,6 +27,7 @@ final class HomeViewModel: ObservableObject {
     // MARK: - Timers
     private var autoScrollCancellable: AnyCancellable?
     private var clockCancellable: AnyCancellable?
+    private var eventsClockCancellable: AnyCancellable?   // ✅ NEW
     private var cancellables = Set<AnyCancellable>()
 
     // MARK: - Init
@@ -35,6 +35,7 @@ final class HomeViewModel: ObservableObject {
         bindPrayerVM()
         startAutoScroll()
         startClock()
+        startEventsClock()          // ✅ NEW
         updateTimeText() // initial
     }
 
@@ -46,6 +47,7 @@ final class HomeViewModel: ObservableObject {
     deinit {
         autoScrollCancellable?.cancel()
         clockCancellable?.cancel()
+        eventsClockCancellable?.cancel()   // ✅ NEW
     }
 
     // MARK: - Bind API VM -> Home Outputs
@@ -60,12 +62,17 @@ final class HomeViewModel: ObservableObject {
             .receive(on: DispatchQueue.main)
             .assign(to: &$errorMessage)
 
-        // ✅ Hijri date -> UI text (بدون الاعتماد على hijriMonthName)
+        // ✅ Hijri date -> UI text
+        // مهم: لا نمسح تاريخ الجهاز إذا API رجعت قيمة فاضية بالبداية
         prayerVM.$hijriDate
             .receive(on: DispatchQueue.main)
             .sink { [weak self] hijriDate in
                 guard let self else { return }
-                self.hijriDateText = self.formatHijriText(hijriDate)
+
+                let trimmed = hijriDate.trimmingCharacters(in: .whitespacesAndNewlines)
+                guard !trimmed.isEmpty else { return }
+
+                self.hijriDateText = self.formatHijriText(trimmed)
                 self.rebuildEvents()
             }
             .store(in: &cancellables)
@@ -110,7 +117,6 @@ final class HomeViewModel: ObservableObject {
     private func startClock() {
         clockCancellable?.cancel()
 
-        // ✅ تحديث كل ثانية عشان ما يتأخر عن الجوال
         clockCancellable = Timer
             .publish(every: 1, on: .main, in: .common)
             .autoconnect()
@@ -125,6 +131,18 @@ final class HomeViewModel: ObservableObject {
         f.timeZone = .current
         f.dateFormat = "a h:mm"
         timeText = f.string(from: Date())
+    }
+
+    // ✅ NEW: تحديث الأحداث تلقائيًا حسب الوقت (كل دقيقة)
+    private func startEventsClock() {
+        eventsClockCancellable?.cancel()
+
+        eventsClockCancellable = Timer
+            .publish(every: 60, on: .main, in: .common)
+            .autoconnect()
+            .sink { [weak self] _ in
+                self?.rebuildEvents()
+            }
     }
 
     // MARK: - Hijri formatter (يعالج "10-01-1447" أو نص جاهز)
@@ -177,14 +195,13 @@ final class HomeViewModel: ObservableObject {
         let day = Date()
 
         let fajr = parseTime(t.Fajr, on: day, tz: tz)
-        let sunrise = parseTime(t.Sunrise, on: day, tz: tz) // ✅ نحتاج الشروق للضحى/أذكار الصباح
+        let sunrise = parseTime(t.Sunrise, on: day, tz: tz)
         let dhuhr = parseTime(t.Dhuhr, on: day, tz: tz)
         let asr = parseTime(t.Asr, on: day, tz: tz)
         let isha = parseTime(t.Isha, on: day, tz: tz)
 
         var list: [NawafilEvent] = []
-// يحتاج تعديل الاوقات
-        // ✅ قواعدك المقترحة:
+
         // أذكار الصباح: من الفجر إلى بداية الضحى (الشروق + 20 دقيقة)
         if let fajr, let sunrise {
             let dhuhaStart = Calendar.current.date(byAdding: .minute, value: 20, to: sunrise)!
@@ -217,7 +234,7 @@ final class HomeViewModel: ObservableObject {
             }
         }
 
-        // مثال: عاشوراء (اختياري)
+        // عاشوراء (اختياري)
         if isAshuraDay() {
             list.insert(.init(top: "اليوم فقط", title: "صيام عاشوراء", icon: "calendar"), at: 0)
         }
@@ -256,5 +273,21 @@ final class HomeViewModel: ObservableObject {
         comp.minute = tComp.minute
         comp.second = 0
         return cal.date(from: comp)
+    }
+}
+
+// ✅ لازم يكون خارج الكلاس
+extension Date {
+    func hijriUmmAlQuraString() -> String {
+        var cal = Calendar(identifier: .islamicUmmAlQura)
+        cal.locale = Locale(identifier: "ar_SA")
+
+        let f = DateFormatter()
+        f.calendar = cal
+        f.locale = Locale(identifier: "ar_SA")
+        f.timeZone = .current
+        f.dateFormat = "d MMMM yyyy"
+
+        return f.string(from: self)
     }
 }
