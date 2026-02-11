@@ -81,9 +81,7 @@ struct HomeView: View {
             }
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    Button {
-                        print("Notifications tapped")
-                    } label: {
+                    NavigationLink(destination: HomeView()) {
                         Image(systemName: "bell.fill")
                             .foregroundColor(textColor)
     
