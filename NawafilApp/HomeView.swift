@@ -6,10 +6,11 @@
 //
 
 import SwiftUI
+import Combine
 
 struct HomeView: View {
-    @State private var selectedIndex: Int = 0
-    
+    @StateObject private var vm = HomeViewModel()
+
     var body: some View {
         NavigationStack {
             ZStack(alignment: .bottom) {
@@ -19,11 +20,11 @@ struct HomeView: View {
                     VStack(spacing: 14) {
                         // Header
                         VStack(spacing: 6) {
-                            Text("١٠ محرم ١٤٤٧")
+                            Text(vm.hijriDateText)
                                 .font(.system(size: 24, weight: .bold))
                                 .foregroundStyle(textColor)
                             
-                            Text("ص ٩:٣٠")
+                            Text(vm.timeText)
                                 .font(.custom("SF Arabic", size: 16).weight(.regular))
                                 .foregroundStyle(textColor.opacity(0.7))
                         }
@@ -32,22 +33,31 @@ struct HomeView: View {
                         
                         // Buttons with Swipe
                         VStack(spacing: 12) {
-                            TabView(selection: $selectedIndex) {
-                                nowPillButton("يحدث الآن", "أذكار الصباح", "sun.max.fill").tag(0)
-                                nowPillButton("يحدث الآن", "أذكار المساء", "moon.stars.fill").tag(1)
-                                nowPillButton("يحدث الآن", "قيام الليل", "moon.fill").tag(2)
+                            TabView(selection: $vm.selectedIndex) {
+
+                                // ✅ إذا ما فيه أحداث
+                                if vm.events.isEmpty {
+                                    emptyEventPill("لا يوجد حدث حاليًا")
+                                        .tag(0)
+                                } else {
+                                    ForEach(Array(vm.events.enumerated()), id: \.element.id) { index, item in
+                                        nowPillButton(item.top, item.title, item.icon)
+                                            .tag(index)
+                                    }
+                                }
+
                             }
                             .tabViewStyle(.page(indexDisplayMode: .never))
                             .frame(height: 68)
                             
-                            // Dots
+                            // Dots (Dynamic)
                             HStack(spacing: 6) {
-                                ForEach(0..<3) { i in
+                                ForEach(0..<vm.events.count, id: \.self) { i in
                                     Circle()
-                                        .fill(selectedIndex == i ? textColor.opacity(0.65) : textColor.opacity(0.35))
+                                        .fill(vm.selectedIndex == i ? textColor.opacity(0.65) : textColor.opacity(0.35))
                                         .frame(width: 7, height: 7)
                                         .onTapGesture {
-                                            withAnimation(.easeInOut) { selectedIndex = i }
+                                            withAnimation(.easeInOut) { vm.selectedIndex = i }
                                         }
                                 }
                             }
@@ -81,13 +91,17 @@ struct HomeView: View {
             }
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    NavigationLink(destination: HomeView()) {
+                    NavigationLink(destination: NotfNotificationsView()) {
                         Image(systemName: "bell.fill")
                             .foregroundColor(textColor)
-    
                     }
                 }
             }
+            
+            .onAppear {
+                vm.onAppear()
+            }
+
         }
     }
     
@@ -124,6 +138,19 @@ struct HomeView: View {
         .buttonStyle(.plain)
         .padding(.horizontal, 30)
     }
+    func emptyEventPill(_ title: String) -> some View {
+        Text(title)
+            .font(.system(size: 20, weight: .bold))
+            .foregroundStyle(.white)
+            .frame(width: 227, height: 68)
+            .background(
+                RoundedRectangle(cornerRadius: 20)
+                    .fill(buttonColor)
+                    .shadow(color: .white, radius: 2, x: 0, y: 1)
+            )
+            .padding(.horizontal, 30)
+    }
+
     
     // MARK: - Card Button
     func cardButton(_ image: String, _ title: String, _ subtitle: String) -> some View {
