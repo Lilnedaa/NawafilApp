@@ -86,7 +86,7 @@ struct SalahView: View {
             description: "الصيام عبادة يقوم فيها المسلم بالإمساك عن الطعام والشراب وكل ما يُفطر من طلوع الفجر حتى غروب الشمس",
             items: [
                 NawafilItem(title: "قيام الليل", topic: .qiyam),
-                NawafilItem(title: "صلاة الضحى", topic: .dhuha),
+                NawafilItem(title: "صلاة الضحى", topic: .duha),
                 NawafilItem(title: "سنة الفجر", topic: .sunnahFajr),
                 NawafilItem(title: "سنة الظهر", topic: .sunnahDhuhr),
                 NawafilItem(title: "سنة المغرب", topic: .sunnahMaghrib),
@@ -136,12 +136,12 @@ struct CButton: View {
         title: "الصلاة",
         description: " الصلاة عبادة يقوم فيها المسلم بالسجود والركوع ",
         items: [
-            NawafilItem(title: "قيام الليل", topic: .qiyam),
             NawafilItem(title: "سنة الفجر", topic: .sunnahFajr),
+            NawafilItem(title: "صلاة الضحى", topic: .duha),
             NawafilItem(title: "سنة الظهر", topic: .sunnahDhuhr),
             NawafilItem(title: "سنة المغرب", topic: .sunnahMaghrib),
             NawafilItem(title: "سنة العشاء", topic: .sunnahIsha),
-            NawafilItem(title: "صلاة الضحى", topic: .dhuha)
+            NawafilItem(title: "قيام الليل", topic: .qiyam)
         ]
     )
 }
