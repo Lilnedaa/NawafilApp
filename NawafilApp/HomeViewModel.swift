@@ -224,15 +224,26 @@ final class HomeViewModel: ObservableObject {
         }
 
         // قيام الليل: من بعد العشاء إلى قبل الفجر (اليوم التالي)
-        if let isha, let fajrSameDay = fajr {
-            let fajrNext = fajrSameDay < isha
+        // ✅ قيام الليل (ثلث أخير): من الثلث الأخير للّيل إلى قبل الفجر
+        if let maghrib = parseTime(t.Maghrib, on: day, tz: tz),
+           let fajrSameDay = fajr {
+
+            let fajrNext = fajrSameDay < maghrib
                 ? Calendar.current.date(byAdding: .day, value: 1, to: fajrSameDay)!
                 : fajrSameDay
 
-            if now >= isha, now < fajrNext {
-                list.append(.init(top: "يحدث الآن", title: "قيام الليل", icon: "moon.fill"))
+            let nightSeconds = fajrNext.timeIntervalSince(maghrib)
+            if nightSeconds > 0 {
+
+                let lastThirdStart = maghrib.addingTimeInterval(nightSeconds * (2.0/3.0))
+                let end = Calendar.current.date(byAdding: .minute, value: -10, to: fajrNext)! // قبل الفجر بـ 5 دقائق
+
+                if now >= lastThirdStart, now < end {
+                    list.append(.init(top: "يحدث الآن", title: "قيام الليل", icon: "moon.fill"))
+                }
             }
         }
+
 
         // عاشوراء (اختياري)
         if isAshuraDay() {
