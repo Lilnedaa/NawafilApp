@@ -7,6 +7,8 @@
 import Foundation
 import SwiftUI
 import Combine
+import WidgetKit
+
 
 final class HomeViewModel: ObservableObject {
 
@@ -408,6 +410,10 @@ final class HomeViewModel: ObservableObject {
         print("✅ events count:", list.count)
         print(list.map { $0.title })
             setEvents(list)
+        
+        
+        NawafilEventStore.saveEvents(list)
+        WidgetCenter.shared.reloadAllTimelines()
         }
 
     private func isAshuraDay() -> Bool {
