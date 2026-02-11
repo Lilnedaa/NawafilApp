@@ -81,17 +81,17 @@ struct HomeView: View {
                             }
                             .buttonStyle(.plain)
 
-                            NavigationLink(destination: SalahView()) {
+                            NavigationLink(destination: SiamView()) {
                                 cardContent("image2", "الصيام", "سنن تقربك إلى الله")
                             }
                             .buttonStyle(.plain)
 
-                            NavigationLink(destination: SalahView()) {
+                            NavigationLink(destination: SiamView()) {
                                 cardContent("image", "الصدقة", "طمأنينة القلب")
                             }
                             .buttonStyle(.plain)
 
-                            NavigationLink(destination: SalahView()) {
+                            NavigationLink(destination: SiamView()) {
                                 cardContent("image3", "الاذكار", "باب للخير ورفع الدرجات")
                             }
                             .buttonStyle(.plain)
