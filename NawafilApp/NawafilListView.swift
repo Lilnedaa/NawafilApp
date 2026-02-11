@@ -12,44 +12,52 @@ struct NawafilListView: View {
     let description: String
     let items: [NawafilItem]
 
+    // ✅ NEW: init افتراضي عشان تقدر تفتح الصفحة بدون بيانات
+    init(
+        title: String = "النوافل",
+        description: String = "",
+        items: [NawafilItem] = []
+    ) {
+        self.title = title
+        self.description = description
+        self.items = items
+    }
+
     var body: some View {
         NavigationStack {
             ZStack {
                 backgroundColor
                     .ignoresSafeArea()
-                
-                VStack(spacing:0) {
+
+                VStack(spacing: 0) {
                     Text(title)
                         .font(.system(size: 48, weight: .bold, design: .default))
                         .font(.custom("SF Arabic Pro", size: 48))
-//                        .fontWeight(.bold)
                         .foregroundColor(textColor)
                         .padding(.top, 10)
-                    
+
                     Text(description)
-                    
-//                        .font(.custom("SF Arabic Pro", size: 16))
                         .fontWeight(.thin)
                         .foregroundColor(textColor)
                         .multilineTextAlignment(.center)
                         .padding(.horizontal, 40)
                         .padding(.top, 50)
-                    
+
                     Spacer()
                         .frame(height: 50)
-                    
+
                     VStack(spacing: 16) {
                         ForEach(items) { item in
                             CButton(item: item)
                         }
                     }
                     .padding(.horizontal, 40)
-                    
+
                     Spacer()
-                    
-                    .frame(height: 80)
-                    .frame(maxWidth: .infinity)
-                    .padding(.bottom, 0)
+
+                        .frame(height: 80)
+                        .frame(maxWidth: .infinity)
+                        .padding(.bottom, 0)
                 }
             }
             .navigationBarHidden(true)
@@ -64,13 +72,12 @@ struct NawafilItem: Identifiable {
     let id = UUID()
     let title: String
     let topic: NawafilTopic
-    
+
     init(title: String, topic: NawafilTopic) {
         self.title = title
         self.topic = topic
     }
 }
-
 
 struct SalahView: View {
     var body: some View {
@@ -105,10 +112,9 @@ struct SiamView: View {
     }
 }
 
-
 struct CButton: View {
-    let item: NawafilItem  
-    
+    let item: NawafilItem
+
     var body: some View {
         NavigationLink(destination: ContentView(topic: item.topic)) {
             Text(item.title)
