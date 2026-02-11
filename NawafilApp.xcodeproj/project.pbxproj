@@ -61,14 +61,7 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		C17498C32F3A94B10044C6C3 /* Exceptions for "TsbeehWidget" folder in "TsbeehWidgetExtension" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				Info.plist,
-			);
-			target = C17498AA2F3A94B00044C6C3 /* TsbeehWidgetExtension */;
-		};
-		C17498CA2F3A9B930044C6C3 /* Exceptions for "NawafilApp" folder in "TsbeehWidgetExtension" target */ = {
+		57065EDF2F3BDFF400736779 /* Exceptions for "NawafilApp" folder in "TsbeehWidgetExtension" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Design.swift,
@@ -77,13 +70,20 @@
 			);
 			target = C17498AA2F3A94B00044C6C3 /* TsbeehWidgetExtension */;
 		};
+		C17498C32F3A94B10044C6C3 /* Exceptions for "TsbeehWidget" folder in "TsbeehWidgetExtension" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = C17498AA2F3A94B00044C6C3 /* TsbeehWidgetExtension */;
+		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		814C10542F2F433800055263 /* NawafilApp */ = {
+		57065ECE2F3BDFF400736779 /* NawafilApp */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				C17498CA2F3A9B930044C6C3 /* Exceptions for "NawafilApp" folder in "TsbeehWidgetExtension" target */,
+				57065EDF2F3BDFF400736779 /* Exceptions for "NawafilApp" folder in "TsbeehWidgetExtension" target */,
 			);
 			path = NawafilApp;
 			sourceTree = "<group>";
@@ -146,7 +146,7 @@
 			isa = PBXGroup;
 			children = (
 				C17498C62F3A988E0044C6C3 /* TsbeehWidgetExtension.entitlements */,
-				814C10542F2F433800055263 /* NawafilApp */,
+				57065ECE2F3BDFF400736779 /* NawafilApp */,
 				814C10622F2F433800055263 /* NawafilAppTests */,
 				814C106C2F2F433800055263 /* NawafilAppUITests */,
 				C17498B12F3A94B00044C6C3 /* TsbeehWidget */,
@@ -193,7 +193,7 @@
 				C17498BE2F3A94B10044C6C3 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
-				814C10542F2F433800055263 /* NawafilApp */,
+				57065ECE2F3BDFF400736779 /* NawafilApp */,
 			);
 			name = NawafilApp;
 			packageProductDependencies = (

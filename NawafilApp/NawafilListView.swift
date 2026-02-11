@@ -119,7 +119,7 @@ struct CButton: View {
                 .padding(.leading, 16)
                 .frame(height: 56)
                 .background(.zaeity)
-                .cornerRadius(27)
+                .cornerRadius(20)
                 .environment(\.layoutDirection, .rightToLeft)
         }
     }
