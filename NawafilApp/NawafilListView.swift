@@ -12,7 +12,6 @@ struct NawafilListView: View {
     let description: String
     let items: [NawafilItem]
 
-    // ✅ NEW: init افتراضي عشان تقدر تفتح الصفحة بدون بيانات
     init(
         title: String = "النوافل",
         description: String = "",
@@ -55,12 +54,11 @@ struct NawafilListView: View {
 
                     Spacer()
 
-                        .frame(height: 80)
+                        .frame(height: 75)
                         .frame(maxWidth: .infinity)
                         .padding(.bottom, 0)
                 }
             }
-            .navigationBarHidden(true)
         }
         .environment(\.layoutDirection, .rightToLeft)
         .environment(\.locale, Locale(identifier: "ar"))
@@ -85,12 +83,12 @@ struct SalahView: View {
             title: "الصلاة",
             description: "الصيام عبادة يقوم فيها المسلم بالإمساك عن الطعام والشراب وكل ما يُفطر من طلوع الفجر حتى غروب الشمس",
             items: [
-                NawafilItem(title: "قيام الليل", topic: .qiyam),
-                NawafilItem(title: "صلاة الضحى", topic: .duha),
                 NawafilItem(title: "سنة الفجر", topic: .sunnahFajr),
+                NawafilItem(title: "صلاة الضحى", topic: .duha),
                 NawafilItem(title: "سنة الظهر", topic: .sunnahDhuhr),
                 NawafilItem(title: "سنة المغرب", topic: .sunnahMaghrib),
-                NawafilItem(title: "سنة العشاء", topic: .sunnahIsha)
+                NawafilItem(title: "سنة العشاء", topic: .sunnahIsha),
+                NawafilItem(title: "قيام الليل", topic: .qiyam)
             ]
         )
     }
@@ -102,11 +100,23 @@ struct SiamView: View {
             title: "الصيام",
             description: "الصيام عبادة يقوم فيها المسلم بالإمساك عن الطعام والشراب وكل ما يُفطر من طلوع الفجر حتى غروب الشمس",
             items: [
-                NawafilItem(title: "صيام الاثنين والخميس", topic: .mondayThursday),
+                NawafilItem(title: "صيام الاثنين و الخميس", topic: .mondayThursday),
                 NawafilItem(title: "صيام الأيام البيض", topic: .whiteDays),
                 NawafilItem(title: "صيام يوم عرفة", topic: .arafah),
                 NawafilItem(title: "صيام يوم عاشوراء", topic: .ashura),
                 NawafilItem(title: "صيام ستة من شوال", topic: .shawwal)
+            ]
+        )
+    }
+}
+struct AdhkarView: View {
+    var body: some View {
+        NawafilListView(
+            title: "الأذكار",
+            description: "الصيام عبادة يقوم فيها المسلم بالإمساك عن الطعام والشراب وكل ما يُفطر من طلوع الفجر حتى غروب الشمس",
+            items: [
+                NawafilItem(title:"أذكار الصباح", topic: .morningAdhkar),
+                NawafilItem(title:"أذكار المساء", topic: .eveningAdhkar)
             ]
         )
     }

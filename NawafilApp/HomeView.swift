@@ -81,7 +81,7 @@ struct HomeView: View {
                             }
                             .buttonStyle(.plain)
 
-                            NavigationLink(destination: SalahView()) {
+                            NavigationLink(destination: SiamView()) {
                                 cardContent("image2", "الصيام", "سنن تقربك إلى الله")
                             }
                             .buttonStyle(.plain)
@@ -91,7 +91,7 @@ struct HomeView: View {
                             }
                             .buttonStyle(.plain)
 
-                            NavigationLink(destination: SalahView()) {
+                            NavigationLink(destination: AdhkarView()) {
                                 cardContent("image3", "الاذكار", "باب للخير ورفع الدرجات")
                             }
                             .buttonStyle(.plain)
