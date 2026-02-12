@@ -102,7 +102,7 @@ struct HomeView: View {
                         Spacer(minLength: 110)
                     }
                     .padding(.horizontal, 20)
-                    .padding(.top, 10)
+                    .padding(.top, -20)
                 }
             }
             .toolbar {
@@ -142,7 +142,7 @@ struct HomeView: View {
                 }
                 .frame(maxWidth: .infinity, alignment: .trailing)
             }
-            .environment(\.layoutDirection, .leftToRight)
+            .environment(\.layoutDirection, .rightToLeft)
             .padding(.horizontal, 18)
             .frame(width: 227, height: 68)
             .background(
@@ -209,5 +209,4 @@ struct HomeView: View {
 
 #Preview {
     HomeView()
-        .environment(\.layoutDirection, .leftToRight)
 }
