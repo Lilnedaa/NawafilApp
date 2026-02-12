@@ -9,18 +9,19 @@ import SwiftUI
 
 struct NotfNotificationsView: View {
     @Environment(\.dismiss) var dismiss
-    @StateObject private var notificationManager = NotificationManager.shared
-    @StateObject private var prayerVM = PrayerTimesViewModel()
-    
-    @State private var salahN = false
-    @State private var qiyamN = false
-    @State private var adkarN = false
-    @State private var AshuraN = false
-    @State private var ArafaN = false
-    @State private var WhiteDaysN = false
-    @State private var MondayN = false
-    @State private var ShawwalN = false
-    
+        @StateObject private var notificationManager = NotificationManager.shared
+        @StateObject private var prayerVM = PrayerTimesViewModel()
+        
+        @AppStorage("salahN") private var salahN = false
+        @AppStorage("qiyamN") private var qiyamN = false
+        @AppStorage("adkarN") private var adkarN = false
+        @AppStorage("AshuraN") private var AshuraN = false
+        @AppStorage("ArafaN") private var ArafaN = false
+        @AppStorage("WhiteDaysN") private var WhiteDaysN = false
+        @AppStorage("MondayN") private var MondayN = false
+        @AppStorage("ShawwalN") private var ShawwalN = false
+        @AppStorage("duhaN") private var duhaN = false
+        @AppStorage("istigfharN") private var istigfharN = false
     var body: some View {
         NavigationStack {
             ZStack {
@@ -53,6 +54,13 @@ struct NotfNotificationsView: View {
                                 isOn: $adkarN,
                                 onToggle: { isOn in
                                     handleAdhkarToggle(isOn: isOn)
+                                }
+                            ),
+                            NotifItemModel(
+                                title: "صلاة الضحى",
+                                isOn: $duhaN,
+                                onToggle: { isOn in
+                                    handleQiyamToggle(isOn: isOn)
                                 }
                             )
                         ]
