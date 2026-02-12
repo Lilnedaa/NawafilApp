@@ -12,7 +12,7 @@ struct NawafilAppApp: App {
 
     var body: some Scene {
         WindowGroup {
-            NTabview()
+            NTabview().preferredColorScheme(.light)
         }
     }
 }

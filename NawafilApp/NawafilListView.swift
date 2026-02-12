@@ -53,7 +53,6 @@ struct NawafilListView: View {
                     .padding(.bottom, 0)
                 }
             }
-            .navigationBarHidden(true)
         }
         .environment(\.layoutDirection, .rightToLeft)
         .environment(\.locale, Locale(identifier: "ar"))
