@@ -36,15 +36,11 @@ struct HomeView: View {
                             TabView(selection: $vm.selectedIndex) {
 
                                 // ✅ إذا ما فيه أحداث
-                                if vm.events.isEmpty {
-                                    emptyEventPill("لا يوجد حدث حاليًا")
-                                        .tag(0)
-                                } else {
                                     ForEach(Array(vm.events.enumerated()), id: \.element.id) { index, item in
                                         nowPillButton(item.top, item.title, item.icon)
                                             .tag(index)
                                     }
-                                }
+                                
 
                             }
                             .tabViewStyle(.page(indexDisplayMode: .never))

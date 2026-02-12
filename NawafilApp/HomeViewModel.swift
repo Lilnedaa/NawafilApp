@@ -414,7 +414,7 @@ final class HomeViewModel: ObservableObject {
                             if now >= lastThirdStart && now < nightEnd {
                                 list.append(.init(top: "يحدث الآن", title: "صلاة التهجد", icon: "moon.fill"))
                             }                         }
-                    } 
+                    }
 
                 } else {
                     // ✅ غير رمضان: قيام الليل
@@ -458,6 +458,16 @@ final class HomeViewModel: ObservableObject {
                 }
             }
         }
+        
+        
+        if list.isEmpty {
+            let adhkar = ["سبحان الله", "الحمد لله", "استغفر الله", "الله أكبر"]
+            let index = Int(now.timeIntervalSinceReferenceDate / 60) % adhkar.count
+
+            list = [
+                .init(top: "ذكر", title: adhkar[index], icon: "sparkles")
+            ]
+        }
 
         // Debug
         print("NOW:", now)
@@ -470,8 +480,10 @@ final class HomeViewModel: ObservableObject {
 
         setEvents(list)
 
-        NawafilEventStore.saveEvents(list)
-        WidgetCenter.shared.reloadAllTimelines()
+        let listForWidget = list.filter { $0.top == "يحدث الآن" }
+        NawafilEventStore.saveEvents(listForWidget)
+        WidgetCenter.shared.reloadTimelines(ofKind: "NawafilLockWidget")
+
     }
 
 
