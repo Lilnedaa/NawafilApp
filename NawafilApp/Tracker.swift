@@ -255,26 +255,32 @@ struct WorshipTrackerView: View {
             backgroundColor.ignoresSafeArea()
 
             VStack {
-                HStack {
-                    Spacer()
-
+                ZStack {
                     Text("متابعة النوافل")
                         .font(.system(size: 24, weight: .bold))
                         .foregroundColor(textColor)
-
-                    Spacer()
-
-                    Button {
-                        tempSelectedWorships = Set(selectedWorships)
-                        showAddSheet = true
-                    } label: {
-                        Image(systemName: "plus")
-                            .font(.title2)
-                            .foregroundStyle(Color(buttonColor))
-                            .frame(width: 40, height: 40)
+                    
+                    HStack {
+                        Spacer()
+                        
+                        Button {
+                            tempSelectedWorships = Set(selectedWorships)
+                            showAddSheet = true
+                        } label: {
+                            Image(systemName: "plus")
+                                .font(.title2)
+                                .foregroundStyle(Color(buttonColor))
+                                .frame(width: 40, height: 40)
+                                .background(
+                                    Circle()
+                                        .fill(Color.white.opacity(0.3))
+                                )
+                                .overlay(
+                                    Circle()
+                                        .stroke(Color.white.opacity(0.5), lineWidth: 1.5)
+                                )
+                        }
                     }
-                    .glassEffect()
-                    .clipShape(Circle())
                 }
                 .padding(.top, 10)
                 .padding(.horizontal, 20)
@@ -358,12 +364,22 @@ struct WorshipTrackerView: View {
         if lastResetDay != today {
             lastResetDay = today
             checkedToday.removeAll()
-        }
+            
+            // صفّر أي عبادة وصلت 30
+            for worship in selectedWorships {
+                let countKey = "count_\(worship)"
+                let currentCount = UserDefaults.standard.integer(forKey: countKey)
+                if currentCount >= 30 {
+                    UserDefaults.standard.set(0, forKey: countKey)
+                }
+            }
+            
+            if lastFullCompletionTime > 0 {
+                let daysSinceCompletion = (now - lastFullCompletionTime) / (24.0 * 3600.0)
 
-        if lastFullCompletionTime > 0 {
-            let hours = (now - lastFullCompletionTime) / 3600
-            if hours > 42 {
-                resetStreak()
+                if daysSinceCompletion > 2.0 {
+                    resetStreak()
+                }
             }
         }
     }
@@ -418,28 +434,27 @@ struct WorshipTrackerView: View {
         guard nowAllChecked else { return }
 
         let now = Date().timeIntervalSince1970
-        let twentyFourHours = 24.0 * 3600.0
+        let today = startOfTodayTimeInterval()
+        
+        let alreadyIncrementedToday = streakWasIncrementedToday()
+        
+        if !alreadyIncrementedToday {
 
-        if lastStreakIncrementTime == 0 || (now - lastStreakIncrementTime) >= twentyFourHours {
-
-          
             prevStreakIncrementTime = lastStreakIncrementTime
             prevFullCompletionTime = lastFullCompletionTime
 
             lastFullCompletionTime = now
             lastStreakIncrementTime = now
 
-            if streakCount < 30 {
-                streakCount += 1
-                fireAnimation = true
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                    fireAnimation = false
-                }
+            streakCount += 1
+            fireAnimation = true
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                fireAnimation = false
             }
         }
     }
 
- 
+
     private func undoTodayStreakIncrement() {
         if streakCount > 0 { streakCount -= 1 }
 
@@ -452,7 +467,7 @@ struct WorshipTrackerView: View {
         prevFullCompletionTime = 0
     }
 
- 
+
     private func incrementSingleWorshipCountOncePerDay(for worship: String) {
         let today = startOfTodayTimeInterval()
 
@@ -463,9 +478,12 @@ struct WorshipTrackerView: View {
         guard lastTapDay != today else { return }
 
         let currentCount = UserDefaults.standard.integer(forKey: countKey)
-        if currentCount < 30 {
-            UserDefaults.standard.set(currentCount + 1, forKey: countKey)
+
+        if currentCount >= 30 {
+            UserDefaults.standard.set(0, forKey: countKey)
         }
+        let newCount = UserDefaults.standard.integer(forKey: countKey) + 1
+        UserDefaults.standard.set(newCount, forKey: countKey)
 
         UserDefaults.standard.set(today, forKey: lastTapKey)
     }
@@ -478,7 +496,7 @@ struct WorshipTrackerView: View {
         let countKey   = "count_\(worship)"
 
         let lastTapDay = UserDefaults.standard.double(forKey: lastTapKey)
-        guard lastTapDay == today else { return } 
+        guard lastTapDay == today else { return }
 
         let currentCount = UserDefaults.standard.integer(forKey: countKey)
         if currentCount > 0 {
@@ -510,9 +528,15 @@ struct AddWorshipSheet: View {
                             .font(.title3)
                             .foregroundColor(textColor)
                             .frame(width: 40, height: 40)
-                            .glassEffect()
+                            .background(
+                                Circle()
+                                    .fill(Color.white.opacity(0.3))
+                            )
+                            .overlay(
+                                Circle()
+                                    .stroke(Color.white.opacity(0.5), lineWidth: 1.5)
+                            )
                     }
-                    .clipShape(Circle())
 
                     Spacer()
 
@@ -524,9 +548,15 @@ struct AddWorshipSheet: View {
                             .fontWeight(.semibold)
                             .foregroundColor(selectedWorships.isEmpty ? .gray : buttonColor)
                             .frame(width: 40, height: 40)
-                            .glassEffect()
+                            .background(
+                                Circle()
+                                    .fill(Color.white.opacity(0.3))
+                            )
+                            .overlay(
+                                Circle()
+                                    .stroke(Color.white.opacity(0.5), lineWidth: 1.5)
+                            )
                     }
-                    .clipShape(Circle())
                     .disabled(selectedWorships.isEmpty)
                 }
                 .padding(.horizontal, 30)
@@ -544,6 +574,9 @@ struct AddWorshipSheet: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.horizontal, 40)
                 .padding(.top, 30)
+
+                Spacer()
+                    .frame(height: 10)
 
                 FlowLayout(spacing: 12) {
                     ForEach(defaultWorships, id: \.self) { worship in
@@ -596,27 +629,6 @@ struct WorshipProgressCard: View {
             Spacer()
 
             HStack(spacing: 0) {
-                ZStack {
-                    Circle()
-                        .stroke(Color.white.opacity(0.2), lineWidth: 6)
-                        .frame(width: 80, height: 80)
-
-                    if individualCount > 0 {
-                        Circle()
-                            .trim(from: 0, to: CGFloat(individualCount) / 30.0)
-                            .stroke(buttonColor, style: StrokeStyle(lineWidth: 6, lineCap: .round))
-                            .frame(width: 80, height: 80)
-                            .rotationEffect(.degrees(-90))
-                            .animation(.easeInOut(duration: 0.3), value: individualCount)
-                    }
-
-                    Text("\(individualCount)/30")
-                        .font(.system(size: 14, weight: .bold))
-                        .foregroundColor(textColor)
-                }
-                .padding(.leading, 15)
-
-                Spacer()
 
                 Button { onToggle() } label: {
                     ZStack {
@@ -635,8 +647,30 @@ struct WorshipProgressCard: View {
                         }
                     }
                 }
-                .padding(.trailing, 15)
+                .padding(.leading, 15)
                 .padding(.top, 30)
+
+                Spacer()
+                
+                ZStack {
+                    Circle()
+                        .stroke(Color.gray.opacity(0.15), lineWidth: 6)
+                        .frame(width: 80, height: 80)
+
+                    if individualCount > 0 {
+                        Circle()
+                            .trim(from: 0, to: CGFloat(individualCount) / 30.0)
+                            .stroke(buttonColor, style: StrokeStyle(lineWidth: 6, lineCap: .round))
+                            .frame(width: 80, height: 80)
+                            .rotationEffect(.degrees(-270))
+                            .animation(.easeInOut(duration: 0.3), value: individualCount)
+                    }
+
+                    Text("\(individualCount)/30")
+                        .font(.system(size: 14, weight: .bold))
+                        .foregroundColor(textColor)
+                }
+                .padding(.trailing, 15)
             }
 
             Spacer()
