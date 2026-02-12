@@ -104,11 +104,27 @@ struct SiamView: View {
                 NawafilItem(title: "صيام الأيام البيض", topic: .whiteDays),
                 NawafilItem(title: "صيام يوم عرفة", topic: .arafah),
                 NawafilItem(title: "صيام يوم عاشوراء", topic: .ashura),
+                NawafilItem(title: "صيام العشر من ذي الحجة", topic: .dhuHijahTen),
                 NawafilItem(title: "صيام ستة من شوال", topic: .shawwal)
             ]
         )
     }
 }
+
+struct SadaqahView: View {
+    var body: some View {
+        NawafilListView(
+            title: "الصدقة",
+            description: "الصيام عبادة يقوم فيها المسلم بالإمساك عن الطعام والشراب وكل ما يُفطر من طلوع الفجر حتى غروب الشمس",
+            items: [
+                NawafilItem(title: "احسان", topic: .mondayThursday),
+                NawafilItem(title:"شفاء", topic: .mondayThursday)
+            ]
+        )
+    }
+}
+
+
 struct AdhkarView: View {
     var body: some View {
         NawafilListView(
@@ -129,7 +145,7 @@ struct CButton: View {
     var body: some View {
         NavigationLink(destination: ContentView(topic: item.topic)) {
             Text(item.title)
-                .font(.system(size: 25, weight: .bold, design: .default))
+                .font(.system(size: 22, weight: .regular, design: .default))
                 .foregroundColor(.baje)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.leading, 16)
