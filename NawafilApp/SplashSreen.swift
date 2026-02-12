@@ -20,7 +20,7 @@ struct SplashScreen: View {
         } else {
             ZStack {
 
-                Image("Background")
+                Image("background")
                     .resizable()
                     .ignoresSafeArea()
                 
@@ -38,7 +38,7 @@ struct SplashScreen: View {
                     scale = 1.0
                 }
                 
-                DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
                     withAnimation(.easeOut(duration: 0.5)) {
                         isActive = true
                     }
