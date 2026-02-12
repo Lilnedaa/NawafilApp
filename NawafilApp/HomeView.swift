@@ -144,7 +144,7 @@ struct HomeView: View {
                 }
                 .frame(maxWidth: .infinity, alignment: .trailing)
             }
-            .environment(\.layoutDirection, .rightToLeft)
+            .environment(\.layoutDirection, .leftToRight)
             .padding(.horizontal, 18)
             .frame(width: 227, height: 68)
             .background(
@@ -211,4 +211,5 @@ struct HomeView: View {
 
 #Preview {
     HomeView()
+
 }
