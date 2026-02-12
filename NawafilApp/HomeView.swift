@@ -29,6 +29,7 @@ struct HomeView: View {
                         }
                         .frame(maxWidth: .infinity)
                         .multilineTextAlignment(.center)
+                        .padding(.top, -20)
 
                         // Buttons with Swipe
                         VStack(spacing: 12) {
@@ -102,7 +103,8 @@ struct HomeView: View {
                         Spacer(minLength: 110)
                     }
                     .padding(.horizontal, 20)
-                    .padding(.top, -20)
+                    .padding(.top, 10)
+                    
                 }
             }
             .toolbar {
@@ -180,9 +182,9 @@ struct HomeView: View {
                         .fill(
                             LinearGradient(
                                 colors: [
-                                    Color.white.opacity(0.0),
-                                    Color.white.opacity(0.40),
-                                    Color.white.opacity(0.60)
+                                    Color.black.opacity(0.0),
+                                    Color.black.opacity(0.50),
+                                    Color.black.opacity(0.70)
                                 ],
                                 startPoint: .top,
                                 endPoint: .bottom

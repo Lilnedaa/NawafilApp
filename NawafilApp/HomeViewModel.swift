@@ -299,18 +299,17 @@ final class HomeViewModel: ObservableObject {
         
 
         // أذكار الصباح: من الفجر إلى بداية الضحى (الشروق + 20 دقيقة)
-        if let fajr, let sunrise {
-            let dhuhaStart = Calendar.current.date(byAdding: .minute, value: 20, to: sunrise)!
-            if now >= fajr, now < dhuhaStart {
-                list.append(.init(top: "يحدث الآن", title: "أذكار الصباح", icon: "sun.max.fill"))
-            }
+        // ✅ أذكار الصباح: من الفجر إلى 11:00 صباحًا
+        if let fajr {
+            let endMorningAdhkar = Calendar.current.date(
+                bySettingHour: 11,
+                minute: 0,
+                second: 0,
+                of: day
+            )!
 
-            // صلاة الضحى: من (الشروق + 20 دقيقة) إلى قبل الظهر بـ 10 دقائق
-            if let dhuhr {
-                let dhuhaEnd = Calendar.current.date(byAdding: .minute, value: -10, to: dhuhr)!
-                if now >= dhuhaStart, now < dhuhaEnd {
-                    list.append(.init(top: "يحدث الآن", title: "صلاة الضحى", icon: "sparkles"))
-                }
+            if now >= fajr, now < endMorningAdhkar {
+                list.append(.init(top: "يحدث الآن", title: "أذكار الصباح", icon: "sun.max.fill"))
             }
         }
 
