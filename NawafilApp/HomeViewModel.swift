@@ -232,6 +232,52 @@ final class HomeViewModel: ObservableObject {
               let y = Int(parts[2]) else { return nil }
         return (d, m, y)
     }
+    
+    
+    private func isRamadan(_ hijri: String) -> Bool {
+        guard let h = hijriDMY(from: hijri) else { return false }
+        return h.month == 9
+    }
+
+    private func isLastTenOfRamadan(_ hijri: String) -> Bool {
+        guard let h = hijriDMY(from: hijri) else { return false }
+        return h.month == 9 && h.day >= 21
+    }
+
+    // إذا Isha رجع 00:xx نخليه تابع لليوم التالي (لأن 00:xx يعتبر بعد منتصف الليل)
+    private func normalizeIsha(_ isha: Date, maghrib: Date) -> Date {
+        let cal = Calendar.current
+        return (isha < maghrib) ? cal.date(byAdding: .day, value: 1, to: isha)! : isha
+    }
+
+    // يجيب 10م لليلة الحالية (لو الآن بعد منتصف الليل يرجع 10م أمس)
+    private func tenPMForNight(now: Date, day: Date) -> Date {
+        let cal = Calendar.current
+        let tenToday = tenPM(of: day)
+        return (now < tenToday) ? cal.date(byAdding: .day, value: -1, to: tenToday)! : tenToday
+    }
+
+    // يخلي الفجر "النهاية الصحيحة" بعد بداية الليل
+    private func fajrAfter(_ start: Date, fajr: Date) -> Date {
+        let cal = Calendar.current
+        return (fajr <= start) ? cal.date(byAdding: .day, value: 1, to: fajr)! : fajr
+    }
+
+
+    // يساعدنا نطلع "10م" لليلة الحالية (لو بعد منتصف الليل يرجع أمس)
+    private func tenPMForCurrentNight(now: Date, day: Date) -> Date {
+        let cal = Calendar.current
+        let tenPMToday = tenPM(of: day) // 10م "اليوم"
+        // إذا الآن قبل 10م (مثل 1ص) نرجع 10م أمس
+        return (now < tenPMToday) ? cal.date(byAdding: .day, value: -1, to: tenPMToday)! : tenPMToday
+    }
+
+    // يحوّل fajr ليكون "الفجر التالي" بالنسبة لبداية الليل
+    private func fajrAfter(_ start: Date, fajrToday: Date) -> Date {
+        let cal = Calendar.current
+        return (fajrToday <= start) ? cal.date(byAdding: .day, value: 1, to: fajrToday)! : fajrToday
+    }
+
 
     private func fastingKindForDay(gregorian date: Date, hijriString: String) -> FastingKind? {
 
@@ -275,7 +321,6 @@ final class HomeViewModel: ObservableObject {
                         of: startOfDay)!
     }
 
-
     // MARK: - Events Logic (based on API timings)
     private func rebuildEvents() {
         guard let t = prayerVM.timings else {
@@ -288,105 +333,114 @@ final class HomeViewModel: ObservableObject {
         let day = Date()
         let cal = Calendar.current
 
+        // Parse once
         let fajr = parseTime(t.Fajr, on: day, tz: tz)
         let sunrise = parseTime(t.Sunrise, on: day, tz: tz)
         let dhuhr = parseTime(t.Dhuhr, on: day, tz: tz)
         let asr = parseTime(t.Asr, on: day, tz: tz)
         let isha = parseTime(t.Isha, on: day, tz: tz)
+        let maghrib = parseTime(t.Maghrib, on: day, tz: tz)
 
         var list: [NawafilEvent] = []
-        
-        
 
-        // أذكار الصباح: من الفجر إلى بداية الضحى (الشروق + 20 دقيقة)
         // ✅ أذكار الصباح: من الفجر إلى 11:00 صباحًا
         if let fajr {
-            let endMorningAdhkar = Calendar.current.date(
-                bySettingHour: 11,
-                minute: 0,
-                second: 0,
-                of: day
-            )!
-
+            let endMorningAdhkar = cal.date(bySettingHour: 11, minute: 0, second: 0, of: day)!
             if now >= fajr, now < endMorningAdhkar {
                 list.append(.init(top: "يحدث الآن", title: "أذكار الصباح", icon: "sun.max.fill"))
             }
         }
 
-        // أذكار المساء: من العصر إلى العشاء
+        // ✅ صلاة الضحى: من بعد الشروق بـ 20 دقيقة → قبل الظهر بـ 10 دقائق
+        if let sunrise, let dhuhr {
+            let startDuha = cal.date(byAdding: .minute, value: 20, to: sunrise)!
+            let endDuha   = cal.date(byAdding: .minute, value: -10, to: dhuhr)!
+            if now >= startDuha, now < endDuha {
+                list.append(.init(top: "يحدث الآن", title: "صلاة الضحى", icon: "sunrise.fill"))
+            }
+        }
+
+        // ✅ أذكار المساء: من العصر إلى العشاء
         if let asr, let isha, now >= asr, now < isha {
             list.append(.init(top: "يحدث الآن", title: "أذكار المساء", icon: "moon.stars.fill"))
         }
 
-        // قيام الليل: من بعد العشاء إلى قبل الفجر (اليوم التالي)
-        // ✅ قيام الليل (ثلث أخير): من الثلث الأخير للّيل إلى قبل الفجر
-//        if let maghrib = parseTime(t.Maghrib, on: day, tz: tz),
-//           let fajrSameDay = fajr {
-//
-//            let fajrNext = fajrSameDay < maghrib
-//                ? Calendar.current.date(byAdding: .day, value: 1, to: fajrSameDay)!
-//                : fajrSameDay
-//
-//            let nightSeconds = fajrNext.timeIntervalSince(maghrib)
-//            if nightSeconds > 0 {
-//
-//                let lastThirdStart = maghrib.addingTimeInterval(nightSeconds * (2.0/3.0))
-//                let end = Calendar.current.date(byAdding: .minute, value: -10, to: fajrNext)! // قبل الفجر بـ 5 دقائق
-//
-//                if now >= lastThirdStart, now < end {
-//                    list.append(.init(top: "يحدث الآن", title: "قيام الليل", icon: "moon.fill"))
-//                }
-//            }
-//        }
-        
-        
-        // ✅ قيام الليل: بعد العشاء بـ 30 دقيقة → قبل الفجر بـ 10 دقائق
-        
-        
-        if let ishaToday = parseTime(t.Isha, on: day, tz: tz),
-           let fajrToday = fajr {
+        // ✅ منطق الليل (رمضان: تراويح + قيام رمضان + تهجد بالعشر الأواخر) | غير رمضان: قيام الليل
+        if var maghribNight = maghrib,
+           let fajrToday = fajr,
+           var ishaNight = isha {
 
-            let ishaForWindow: Date
-            if now < fajrToday && now < ishaToday {
-                ishaForWindow = Calendar.current.date(byAdding: .day, value: -1, to: ishaToday)!
-            } else {
-                ishaForWindow = ishaToday
+            let isRamadanToday = isRamadan(prayerVM.hijriDate)
+            let lastTen = isLastTenOfRamadan(prayerVM.hijriDate)
+
+            // ✅ لو الآن بعد منتصف الليل وقبل الفجر → نستخدم عشاء "أمس" (ليلة أمس)
+            if now < fajrToday {
+                maghribNight = cal.date(byAdding: .day, value: -1, to: maghribNight)!
+                ishaNight = cal.date(byAdding: .day, value: -1, to: ishaNight)!
             }
 
-            let fajrEnd: Date
-            if fajrToday <= ishaForWindow {
-                fajrEnd = Calendar.current.date(byAdding: .day, value: 1, to: fajrToday)!
-            } else {
-                fajrEnd = fajrToday
-            }
+            // ✅ تطبيع العشاء لو كان 00:xx (عشان ما ينكسر)
+            ishaNight = normalizeIsha(ishaNight, maghrib: maghribNight)
 
-            let start = Calendar.current.date(byAdding: .minute, value: 30, to: ishaForWindow)!
-            let end = Calendar.current.date(byAdding: .minute, value: -10, to: fajrEnd)!
+            // ✅ نافذة الليل
+            // (أنتِ تبين ما يبدأ قبل 10م)
+            let nightTenPM = tenPMForNight(now: now, day: day)
+            let afterIsha = cal.date(byAdding: .minute, value: 15, to: ishaNight)!
+            let nightStart = max(afterIsha, nightTenPM)
 
-            if now >= start, now < end {
-                list.append(.init(top: "يحدث الآن", title: "قيام الليل", icon: "moon.fill"))
+            // نهاية الليلة: قبل الفجر بـ 10 دقائق (الفجر "التالي" بالنسبة لبداية الليل)
+            let fajrEnd = fajrAfter(nightStart, fajr: fajrToday)
+            let nightEnd = cal.date(byAdding: .minute, value: -10, to: fajrEnd)!
+
+            if nightStart < nightEnd {
+                if isRamadanToday {
+                    // ✅ التراويح: من بعد العشاء إلى 12:00 AM (منتصف الليل)
+                    let tarawihStart = afterIsha
+
+                    let midnightNext = cal.startOfDay(
+                        for: cal.date(byAdding: .day, value: 1, to: tarawihStart)!
+                    )
+                    let tarawihEnd = min(midnightNext, nightEnd)
+
+                    if now >= tarawihStart && now < tarawihEnd {
+                        list.append(.init(top: "يحدث الآن", title: "صلاة التراويح", icon: "moon.stars.fill"))
+                    }
+
+                    // ✅ التهجد: فقط العشر الأواخر + الثلث الأخير
+                    if lastTen {
+                        let nightSeconds = nightEnd.timeIntervalSince(nightStart)
+                        if nightSeconds > 0 {
+                            let lastThirdStart = nightStart.addingTimeInterval(nightSeconds * (2.0/3.0))
+                            if now >= lastThirdStart && now < nightEnd {
+                                list.append(.init(top: "يحدث الآن", title: "صلاة التهجد", icon: "moon.fill"))
+                            }                         }
+                    } 
+
+                } else {
+                    // ✅ غير رمضان: قيام الليل
+                    if now >= nightStart && now < nightEnd {
+                        list.append(.init(top: "يحدث الآن", title: "قيام الليل", icon: "moon.fill"))
+                    }
+                }
             }
         }
 
-
+        // ✅ الصيام (ما يظهر في رمضان)
         let today = day
-            let tomorrow = cal.date(byAdding: .day, value: 1, to: today)!
+        let tomorrow = cal.date(byAdding: .day, value: 1, to: today)!
 
-            // مغرب اليوم
-            let maghribToday = parseTime(t.Maghrib, on: today, tz: tz)
+        let maghribToday = maghrib
+        let maghribTomorrow: Date? = {
+            guard let tt = prayerVM.tomorrowTimings else { return nil }
+            return parseTime(tt.Maghrib, on: tomorrow, tz: tz)
+        }()
 
-            // مغرب بكرة (من PrayerVM)
-            let maghribTomorrow: Date? = {
-                guard let tt = prayerVM.tomorrowTimings else { return nil }
-                return parseTime(tt.Maghrib, on: tomorrow, tz: tz)
-            }()
-
+        if !isRamadan(prayerVM.hijriDate) && !isRamadan(prayerVM.tomorrowHijriDate) {
             if let maghribToday {
                 // (A) إذا اليوم يوم صيام: يبدأ من أمس 10م وينتهي مغرب اليوم
                 if let kindToday = fastingKindForDay(gregorian: today, hijriString: prayerVM.hijriDate) {
-                    let start = cal.date(byAdding: .day, value: -1, to: tenPM(of: today))! // أمس 10م
+                    let start = cal.date(byAdding: .day, value: -1, to: tenPM(of: today))!
                     let end = maghribToday
-
                     if now >= start && now < end {
                         list.insert(.init(top: "يحدث الآن", title: kindToday.title, icon: kindToday.icon), at: 0)
                     }
@@ -396,24 +450,30 @@ final class HomeViewModel: ObservableObject {
                         let kindTomorrow = fastingKindForDay(gregorian: tomorrow, hijriString: prayerVM.tomorrowHijriDate),
                         !prayerVM.tomorrowHijriDate.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
 
-                    let start = tenPM(of: today) // اليوم 10م
+                    let start = tenPM(of: today)
                     let end = maghribTomorrow
-
                     if now >= start && now < end {
                         list.insert(.init(top: "يحدث الآن", title: kindTomorrow.title, icon: kindTomorrow.icon), at: 0)
                     }
                 }
             }
+        }
 
-            // ❌ حذفنا عاشوراء القديم لأنه صار ضمن منطق الصيام أعلاه
+        // Debug
+        print("NOW:", now)
+        print("Maghrib:", maghribToday as Any)
+        print("Isha:", isha as Any)
+        print("Fajr:", fajr as Any)
+        print("tenPM(today):", tenPM(of: day))
         print("✅ events count:", list.count)
         print(list.map { $0.title })
-            setEvents(list)
-        
-        
+
+        setEvents(list)
+
         NawafilEventStore.saveEvents(list)
         WidgetCenter.shared.reloadAllTimelines()
-        }
+    }
+
 
     private func isAshuraDay() -> Bool {
         let parts = prayerVM.hijriDate.split(separator: "-").map(String.init)
