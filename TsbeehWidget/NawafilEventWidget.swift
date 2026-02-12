@@ -96,10 +96,11 @@ struct NawafilLockWidgetView: View {
                     Image(systemName: event.icon)
                         .font(.system(size: 18, weight: .semibold))
 
-                    VStack(alignment: .leading, spacing: 2) {
+                    VStack(alignment: .trailing, spacing: 2) {
                         Text(event.top)
                             .font(.system(size: 11))
                             .foregroundStyle(.secondary)
+
 
                         Text(event.title)
                             .font(.system(size: 14, weight: .bold))
