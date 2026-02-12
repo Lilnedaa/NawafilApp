@@ -16,7 +16,7 @@ struct ContentView: View {
                     .ignoresSafeArea()
                 VStack(spacing: 15) {
                     Text(viewModel.pageTitle)
-                        .font(.system(size: 38, weight: .bold))
+                        .font(.system(size: 34, weight: .bold))
                         .foregroundColor(.darkgreen)
                         .padding(.top, 75)
                         .padding(.bottom, 15)

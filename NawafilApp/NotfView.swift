@@ -9,111 +9,116 @@ import SwiftUI
 
 struct NotfNotificationsView: View {
     @Environment(\.dismiss) var dismiss
-        @StateObject private var notificationManager = NotificationManager.shared
-        @StateObject private var prayerVM = PrayerTimesViewModel()
-        
-        @AppStorage("salahN") private var salahN = false
-        @AppStorage("qiyamN") private var qiyamN = false
-        @AppStorage("adkarN") private var adkarN = false
-        @AppStorage("AshuraN") private var AshuraN = false
-        @AppStorage("ArafaN") private var ArafaN = false
-        @AppStorage("WhiteDaysN") private var WhiteDaysN = false
-        @AppStorage("MondayN") private var MondayN = false
-        @AppStorage("ShawwalN") private var ShawwalN = false
-        @AppStorage("duhaN") private var duhaN = false
-        @AppStorage("istigfharN") private var istigfharN = false
+    @StateObject private var notificationManager = NotificationManager.shared
+    @StateObject private var prayerVM = PrayerTimesViewModel()
+    
+    @AppStorage("salahN") private var salahN = false
+    @AppStorage("qiyamN") private var qiyamN = false
+    @AppStorage("adkarN") private var adkarN = false
+    @AppStorage("AshuraN") private var AshuraN = false
+    @AppStorage("ArafaN") private var ArafaN = false
+    @AppStorage("WhiteDaysN") private var WhiteDaysN = false
+    @AppStorage("MondayN") private var MondayN = false
+    @AppStorage("ShawwalN") private var ShawwalN = false
+    @AppStorage("duhaN") private var duhaN = false
+    @AppStorage("istigfharN") private var istigfharN = false
+    
     var body: some View {
         NavigationStack {
             ZStack {
                 backgroundColor
                     .ignoresSafeArea()
                 
-                VStack(spacing: 0) {
-                    Spacer()
-                        .frame(height: 20)
-                    
-                    NotifCardView(
-                        title: "النوافل",
-                        items: [
-                            NotifItemModel(
-                                title: "الصدقة",
-                                isOn: $salahN,
-                                onToggle: { isOn in
-                                    handleSadaqaToggle(isOn: isOn)
-                                }
-                            ),
-                            NotifItemModel(
-                                title: "قيام الليل",
-                                isOn: $qiyamN,
-                                onToggle: { isOn in
-                                    handleQiyamToggle(isOn: isOn)
-                                }
-                            ),
-                            NotifItemModel(
-                                title: "اذكار الصباح والمساء",
-                                isOn: $adkarN,
-                                onToggle: { isOn in
-                                    handleAdhkarToggle(isOn: isOn)
-                                }
-                            ),
-                            NotifItemModel(
-                                title: "صلاة الضحى",
-                                isOn: $duhaN,
-                                onToggle: { isOn in
-                                    handleQiyamToggle(isOn: isOn)
-                                }
-                            )
-                        ]
-                    )
-                    .padding(.horizontal, 20)
-                    
-                    Spacer()
-                        .frame(height: 20)
-                    
-                    NotifCardView(
-                        title: "الصيام",
-                        items: [
-                            NotifItemModel(
-                                title: "عاشوراء",
-                                isOn: $AshuraN,
-                                onToggle: { isOn in
-                                    handleAshuraToggle(isOn: isOn)
-                                }
-                            ),
-                            NotifItemModel(
-                                title: "يوم عرفة",
-                                isOn: $ArafaN,
-                                onToggle: { isOn in
-                                    handleArafaToggle(isOn: isOn)
-                                }
-                            ),
-                            NotifItemModel(
-                                title: "أيام البيض",
-                                isOn: $WhiteDaysN,
-                                onToggle: { isOn in
-                                    handleWhiteDaysToggle(isOn: isOn)
-                                }
-                            ),
-                            NotifItemModel(
-                                title: "الاثنين والخميس",
-                                isOn: $MondayN,
-                                onToggle: { isOn in
-                                    handleMondayThursdayToggle(isOn: isOn)
-                                }
-                            ),
-                            NotifItemModel(
-                                title: "ست من شوال",
-                                isOn: $ShawwalN,
-                                onToggle: { isOn in
-                                    handleShawwalToggle(isOn: isOn)
-                                }
-                            )
-                        ]
-                    )
-                    .padding(.horizontal, 20)
-                    
-                    Spacer()
+                ScrollView {
+                    VStack(spacing: 0) {
+                        Spacer()
+                            .frame(height: 20)
+                        
+                        NotifCardView(
+                            title: "النوافل",
+                            items: [
+                                NotifItemModel(
+                                    title: "الصدقة",
+                                    isOn: $salahN,
+                                    onToggle: { isOn in
+                                        handleSadaqaToggle(isOn: isOn)
+                                    }
+                                ),
+                                NotifItemModel(
+                                    title: "قيام الليل",
+                                    isOn: $qiyamN,
+                                    onToggle: { isOn in
+                                        handleQiyamToggle(isOn: isOn)
+                                    }
+                                ),
+                                NotifItemModel(
+                                    title: "اذكار الصباح والمساء",
+                                    isOn: $adkarN,
+                                    onToggle: { isOn in
+                                        handleAdhkarToggle(isOn: isOn)
+                                    }
+                                ),
+                                NotifItemModel(
+                                    title: "صلاة الضحى",
+                                    isOn: $duhaN,
+                                    onToggle: { isOn in
+                                        handleQiyamToggle(isOn: isOn)
+                                    }
+                                )
+                            ]
+                        )
+                        .padding(.horizontal, 20)
+                        
+                        Spacer()
+                            .frame(height: 20)
+                        
+                        NotifCardView(
+                            title: "الصيام",
+                            items: [
+                                NotifItemModel(
+                                    title: "عاشوراء",
+                                    isOn: $AshuraN,
+                                    onToggle: { isOn in
+                                        handleAshuraToggle(isOn: isOn)
+                                    }
+                                ),
+                                NotifItemModel(
+                                    title: "يوم عرفة",
+                                    isOn: $ArafaN,
+                                    onToggle: { isOn in
+                                        handleArafaToggle(isOn: isOn)
+                                    }
+                                ),
+                                NotifItemModel(
+                                    title: "أيام البيض",
+                                    isOn: $WhiteDaysN,
+                                    onToggle: { isOn in
+                                        handleWhiteDaysToggle(isOn: isOn)
+                                    }
+                                ),
+                                NotifItemModel(
+                                    title: "الاثنين والخميس",
+                                    isOn: $MondayN,
+                                    onToggle: { isOn in
+                                        handleMondayThursdayToggle(isOn: isOn)
+                                    }
+                                ),
+                                NotifItemModel(
+                                    title: "ست من شوال",
+                                    isOn: $ShawwalN,
+                                    onToggle: { isOn in
+                                        handleShawwalToggle(isOn: isOn)
+                                    }
+                                )
+                            ]
+                        )
+                        .padding(.horizontal, 20)
+                        
+                        Spacer()
+                            .frame(height: 20)
+                    }
                 }
+                .scrollIndicators(.hidden)
             }
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
@@ -122,7 +127,6 @@ struct NotfNotificationsView: View {
                         .font(.system(size: 30, weight: .bold, design: .default))
                         .foregroundColor(textColor)
                 }
-                
             }
             .toolbarBackground(backgroundColor, for: .navigationBar)
             .toolbarBackground(.visible, for: .navigationBar)
@@ -145,7 +149,6 @@ struct NotfNotificationsView: View {
         }
         .environment(\.layoutDirection, .rightToLeft)
         .environment(\.locale, Locale(identifier: "ar"))
-
     }
     
     private func checkPendingNotifications() {
@@ -156,7 +159,7 @@ struct NotfNotificationsView: View {
             }
         }
     }
-        
+    
     private func handleSadaqaToggle(isOn: Bool) {
         guard let timings = prayerVM.timings else {
             print(" مواقيت الصلاة مو موجودة")
@@ -190,10 +193,9 @@ struct NotfNotificationsView: View {
         }
         
         if isOn {
-
-//الصباح
+            //الصباح
             notificationManager.scheduleMorningAdhkarNotification(fajrTime: timings.Fajr)
-//المساء
+            //المساء
             notificationManager.scheduleEveningAdhkarNotification(maghribTime: timings.Maghrib)
         } else {
             notificationManager.cancelNotification(identifier: "adhkar_morning")
@@ -221,7 +223,7 @@ struct NotfNotificationsView: View {
         if isOn {
             notificationManager.scheduleWhiteDaysNotification(currentHijriMonth: prayerVM.hijriMonthNumber)
         } else {
-//ايام بيض
+            //ايام بيض
             for month in 1...12 {
                 notificationManager.cancelNotification(identifier: "white_days_\(month)")
             }
@@ -320,4 +322,3 @@ struct NotifRowView: View {
 }
 
 #Preview { NotfNotificationsView() }
-
