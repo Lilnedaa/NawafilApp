@@ -31,7 +31,7 @@ struct NTabview: View {
            HomeView()
                 .tabItem{
                     Image("Kaaba")
-                                   .renderingMode(.template)
+                        .renderingMode(.template)
                                
                     
                 }.tag(1)
@@ -46,7 +46,7 @@ struct NTabview: View {
                 }.tag(2)
             
        
-        }
+       } 
         .tint(buttonColor)
 
         

@@ -123,13 +123,6 @@ struct NotfNotificationsView: View {
                         .foregroundColor(textColor)
                 }
                 
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    NavigationLink(destination: HomeView()) {
-                        Image(systemName: "chevron.right")
-                            .font(.system(size: 20, weight: .semibold))
-                            .foregroundColor(Color.black)
-                    }
-                }
             }
             .toolbarBackground(backgroundColor, for: .navigationBar)
             .toolbarBackground(.visible, for: .navigationBar)
@@ -150,6 +143,9 @@ struct NotfNotificationsView: View {
                 }
             }
         }
+        .environment(\.layoutDirection, .rightToLeft)
+        .environment(\.locale, Locale(identifier: "ar"))
+
     }
     
     private func checkPendingNotifications() {

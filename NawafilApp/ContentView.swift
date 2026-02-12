@@ -15,13 +15,12 @@ struct ContentView: View {
                 Color.background
                     .ignoresSafeArea()
                 VStack(spacing: 15) {
-
                     Text(viewModel.pageTitle)
-                        .font(.system(size: 36, weight: .bold))
+                        .font(.system(size: 38, weight: .bold))
                         .foregroundColor(.darkgreen)
-                        .padding(.top, 10)
-                        .padding(.bottom, 5)
-
+                        .padding(.top, 75)
+                        .padding(.bottom, 15)
+                    
                     TabView(selection: $viewModel.currentIndex) {
                         ForEach(Array(viewModel.cards.enumerated()), id: \.element.id) { index, card in
                             GeometryReader { geo in
@@ -48,30 +47,60 @@ struct ContentView: View {
                     .tabViewStyle(.page(indexDisplayMode: .never))
                     .frame(height: 550)
 
-                    HStack {
-                        ForEach(viewModel.cards.indices, id: \.self) { index in
-                            Circle()
-                                .fill(viewModel.currentIndex == index ? .darkgreen : .gray.opacity(0.4))
-                                .frame(width: 8, height: 8)
-                        }
-                    }
+                    // Page Indicator مع 4 نقاط فقط
+                    PageIndicator(
+                        currentPage: viewModel.currentIndex,
+                        totalPages: viewModel.cards.count,
+                        maxDots: 4
+                    )
                 }
             }
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button {
-                    } label: {
-                        Image(systemName: "bell.fill")
-                            .foregroundColor(.darkgreen)
-                    }
-                }
-            }
+            .ignoresSafeArea(edges: .top)
         }
         .environment(\.layoutDirection, .rightToLeft)
         .environment(\.locale, Locale(identifier: "ar"))
     }
 }
 
+struct PageIndicator: View {
+    let currentPage: Int
+    let totalPages: Int
+    let maxDots: Int
+    
+    var body: some View {
+        HStack(spacing: 8) {
+            ForEach(visibleDotIndices, id: \.self) { index in
+                Circle()
+                    .fill(currentPage == index ? Color.darkgreen : Color.gray.opacity(0.4))
+                    .frame(width: 8, height: 8)
+                    .transition(.scale.combined(with: .opacity))
+            }
+        }
+        .animation(.easeInOut(duration: 0.3), value: currentPage)
+    }
+    
+    private var visibleDotIndices: [Int] {
+        guard totalPages > maxDots else {
+            return Array(0..<totalPages)
+        }
+        
+        let startIndex: Int
+        let endIndex: Int
+        
+        if currentPage < maxDots - 1 {
+            startIndex = 0
+            endIndex = maxDots - 1
+        } else if currentPage >= totalPages - (maxDots - 1) {
+            startIndex = totalPages - maxDots
+            endIndex = totalPages - 1
+        } else {
+            startIndex = currentPage - (maxDots - 2)
+            endIndex = currentPage + 1
+        }
+        
+        return Array(startIndex...endIndex)
+    }
+}
 
 struct CardView: View {
     let title: String
@@ -87,10 +116,7 @@ struct CardView: View {
                 Text(title)
                     .foregroundColor(.baje)
                     .font(.system(size: 34, weight: .bold))
-                    .padding(.top, 30)
-
-                
-                Spacer()
+                    .padding(.top,50)
                 
                 Text(content)
                     .foregroundColor(.baje)
@@ -106,7 +132,6 @@ struct CardView: View {
         }
     }
 }
-
 
 #Preview {
     ContentView(topic: .duha)

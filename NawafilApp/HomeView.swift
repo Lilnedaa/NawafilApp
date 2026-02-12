@@ -92,7 +92,7 @@ struct HomeView: View {
                             }
                             .buttonStyle(.plain)
 
-                            NavigationLink(destination: SiamView()) {
+                            NavigationLink(destination: AdhkarView()) {
                                 cardContent("image3", "الاذكار", "باب للخير ورفع الدرجات")
                             }
                             .buttonStyle(.plain)
