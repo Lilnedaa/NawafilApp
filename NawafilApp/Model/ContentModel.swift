@@ -25,7 +25,7 @@ enum NawafilTopic: String, CaseIterable, Identifiable {
     case sunnahIsha = "سنة العشاء"
     
     // MARK: Fasting topics
-    case mondayThursday = "صيام الاثنين والخميس"
+    case mondayThursday = "صيام الاثنين و الخميس"
     case whiteDays = "صيام الأيام البيض"
     case arafah = "صيام يوم عرفة"
     case dhuHijahTen = "صيام العشر من ذي الحجة"
@@ -35,6 +35,10 @@ enum NawafilTopic: String, CaseIterable, Identifiable {
     // MARK: Adkhar topics
     case morningAdhkar = "أذكار الصباح"
     case eveningAdhkar = "أذكار المساء"
+    
+    case ehsan = "منصة إحسان"
+    case shifa = "منصة شفاء"
+    
 
     var id: String { rawValue }
 
@@ -744,6 +748,11 @@ enum NawafilTopic: String, CaseIterable, Identifiable {
                 )
 
             ]
+        case .ehsan:
+            return []
+            
+        case .shifa:
+            return []
 
         }
         
