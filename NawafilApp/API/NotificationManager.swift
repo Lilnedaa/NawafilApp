@@ -37,62 +37,107 @@ extension NotificationManager {
     
 //بخلي الصدقة كل يوم عالعصر
     func scheduleSadaqaNotification(asrTime: String) {
-        let center = UNUserNotificationCenter.current()
+            let center = UNUserNotificationCenter.current()
 
-        // احذف القديم
-        center.removePendingNotificationRequests(withIdentifiers: ["sadaqa_test"])
+            // احذف القديم
+            center.removePendingNotificationRequests(withIdentifiers: ["sadaqa_daily"])
 
-        let content = UNMutableNotificationContent()
-        content.title = "تذكير الصدقة"
-        content.body = "لا تنسى تتصدق اليوم بليز"
-        content.sound = .default
+            let content = UNMutableNotificationContent()
+            content.title = "وقت الصدقة"
+            content.body = " مانقصت صدقة من مال"
+            content.sound = .default
 
-        let trigger = UNTimeIntervalNotificationTrigger(
-            timeInterval: 60,
-            repeats: true
-        )
-
-        let request = UNNotificationRequest(
-            identifier: "sadaqa_test",
-            content: content,
-            trigger: trigger
-        )
-
-        center.add(request) { error in
-            if let error = error {
-                print(" Error:", error)
-            } else {
-                print(" Notification scheduled")
+            if let time = parseTime(asrTime) {
+                var dateComponents = DateComponents()
+                dateComponents.hour = time.hour
+                dateComponents.minute = time.minute
+                
+                let trigger = UNCalendarNotificationTrigger(
+                    dateMatching: dateComponents,
+                    repeats: true
+                )
+                
+                let request = UNNotificationRequest(
+                    identifier: "sadaqa_daily",
+                    content: content,
+                    trigger: trigger
+                )
+                
+                center.add(request) { error in
+                    if let error = error {
+                        print(" خطأ في الصدقة: \(error)")
+                    } else {
+                        print(" تم تذكير الصدقة \(time.hour):\(time.minute)")
+                    }
+                }
             }
         }
-
         
-//        if let time = parseTime(asrTime) {
-//            var dateComponents = DateComponents()
-//            dateComponents.hour = time.hour
-//            dateComponents.minute = time.minute
-//            
-//            let trigger = UNCalendarNotificationTrigger(
-//                dateMatching: dateComponents,
-//                repeats: true
-//            )
-//            
-//            let request = UNNotificationRequest(
-//                identifier: "sadaqa_daily",
-//                content: content,
-//                trigger: trigger
-//            )
-//            
-//            UNUserNotificationCenter.current().add(request) { error in
-//                if let error = error {
-//                    print(" خطأ في الصدقة: \(error)")
-//                } else {
-//                    print(" تم تذكير الصدقة \(time.hour):\(time.minute)")
-//                }
-//            }
-//        }
-    }
-    
+        func scheduleIstigfharNotification() {
+            let center = UNUserNotificationCenter.current()
+            
+            // احذف القديم
+            center.removePendingNotificationRequests(withIdentifiers: ["istigfhar_repeat"])
+            
+            let content = UNMutableNotificationContent()
+            content.title = "تذكير"
+            content.body = "استغفر الله"
+            content.sound = .default
+            
+            let trigger = UNTimeIntervalNotificationTrigger(
+                timeInterval: 60,
+                repeats: true
+            )
+            
+            let request = UNNotificationRequest(
+                identifier: "istigfhar_repeat",
+                content: content,
+                trigger: trigger
+            )
+            
+            center.add(request) { error in
+                if let error = error {
+                    print(" خطأ في الاستغفار: \(error)")
+                } else {
+                    print(" تم الاستغفار")
+                }
+            }
+        }
+        
+        func scheduleDuhaNotification() {
+            let center = UNUserNotificationCenter.current()
+            
+            // احذف القديم
+            center.removePendingNotificationRequests(withIdentifiers: ["duha_daily"])
+            
+            let content = UNMutableNotificationContent()
+            content.title = "وقت الضحى"
+            content.body = "حان وقت صلاة الضحى"
+            content.sound = .default
+            
+            var dateComponents = DateComponents()
+            dateComponents.hour = 8
+            dateComponents.minute = 0
+            
+            let trigger = UNCalendarNotificationTrigger(
+                dateMatching: dateComponents,
+                repeats: true
+            )
+            
+            let request = UNNotificationRequest(
+                identifier: "duha_daily",
+                content: content,
+                trigger: trigger
+            )
+            
+            center.add(request) { error in
+                if let error = error {
+                    print(" خطأ في الضحى: \(error)")
+                } else {
+                    print(" تم صلاة")
+                }
+            }
+        }
 //قيام الليل بربطه بعد العشاء
     func scheduleQiyamNotification(ishaTime: String) {
         let content = UNMutableNotificationContent()

@@ -14,5 +14,6 @@ struct TsbeehWidgetBundle: WidgetBundle {
         TsbeehWidget()
         TsbeehWidgetControl()
         TsbeehWidgetLiveActivity()
+        NawafilLockWidget()
     }
 }
