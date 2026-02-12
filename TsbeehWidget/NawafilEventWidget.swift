@@ -46,34 +46,14 @@ struct NawafilProvider: TimelineProvider {
     }
 
     func getTimeline(in context: Context, completion: @escaping (Timeline<NawafilEntry>) -> ()) {
-
-        let eventsAll = WidgetEventStore.loadEvents()
         let now = Date()
+        let entry = NawafilEntry(date: now, event: nil)
 
-        guard !eventsAll.isEmpty else {
-            let entry = NawafilEntry(date: now, event: nil)
-            let next = Calendar.current.date(byAdding: .minute, value: 15, to: now)!
-            completion(Timeline(entries: [entry], policy: .after(next)))
-            return
-        }
-
-        // ✅ لو تبين يبدّل "يحدث الآن" فقط:
-        let eventsNow = eventsAll.filter { $0.top == "يحدث الآن" }
-        let source = eventsNow.isEmpty ? eventsAll : eventsNow
-
-        let stepMinutes = 1   // 👈 خليها 5 لو تبين أكثر ثبات
-        let points = 15       // 👈 جدول 15 تحديث قدام
-
-        var entries: [NawafilEntry] = []
-        for i in 0..<points {
-            let date = Calendar.current.date(byAdding: .minute, value: i * stepMinutes, to: now)!
-            let event = source[i % source.count]
-            entries.append(NawafilEntry(date: date, event: event))
-        }
-
-        let refresh = Calendar.current.date(byAdding: .minute, value: points * stepMinutes, to: now)!
-        completion(Timeline(entries: entries, policy: .after(refresh)))
+        // خلي refresh كل 15 دقيقة (خفيف على النظام)
+        let next = Calendar.current.date(byAdding: .minute, value: 15, to: now)!
+        completion(Timeline(entries: [entry], policy: .after(next)))
     }
+
 
 }
 
@@ -88,41 +68,72 @@ struct NawafilLockWidgetView: View {
     var entry: NawafilProvider.Entry
 
     var body: some View {
-        ZStack {
-            if let event = entry.event {
+        TimelineView(.periodic(from: entry.date, by: 60)) { timeline in
+            let all = WidgetEventStore.loadEvents()
+            let now = timeline.date
 
-                HStack(spacing: 8) {
+            let eventsNow = all.filter { $0.top == "يحدث الآن" }
+            let source = eventsNow.isEmpty ? all : eventsNow
 
-                    Image(systemName: event.icon)
-                        .font(.system(size: 18, weight: .semibold))
+            let event: NawafilEvent? = {
+                guard !source.isEmpty else { return nil }
+                let minuteIndex = Int(now.timeIntervalSinceReferenceDate / 60)
+                return source[minuteIndex % source.count]
+            }()
 
-                    VStack(alignment: .trailing, spacing: 2) {
-                        Text(event.top)
-                            .font(.system(size: 11))
-                            .foregroundStyle(.secondary)
+            ZStack {
+                if let event {
+                    HStack(spacing: 8) {
+                        Image(systemName: event.icon)
+                            .font(.system(size: 18, weight: .semibold))
 
+                        VStack(alignment: .trailing, spacing: 2) {
+                            Text(event.top)
+                                .font(.system(size: 11))
+                                .foregroundStyle(.secondary)
 
-                        Text(event.title)
-                            .font(.system(size: 14, weight: .bold))
-                            .lineLimit(1)
-                            .minimumScaleFactor(0.8)
+                            Text(event.title)
+                                .font(.system(size: 14, weight: .bold))
+                                .lineLimit(1)
+                                .minimumScaleFactor(0.8)
+                        }
+
+                        Spacer()
                     }
+                    .padding(.horizontal, 8)
+                } else {
 
-                    Spacer()
+                    let adhkar = ["سبحان الله", "الحمد لله", "استغفر الله", "الله أكبر"]
+                    let index = Int(now.timeIntervalSinceReferenceDate / 60) % adhkar.count
+                    let text = adhkar[index]
+
+                    HStack(spacing: 8) {
+
+                        Image(systemName: "sparkles")
+                            .font(.system(size: 18, weight: .semibold))
+
+                        VStack(alignment: .trailing, spacing: 2) {
+                            Text("ذكر")
+                                .font(.system(size: 11))
+                                .foregroundStyle(.secondary)
+
+                            Text(text)
+                                .font(.system(size: 14, weight: .bold))
+                                .lineLimit(1)
+                                .minimumScaleFactor(0.8)
+                        }
+
+                        Spacer()
+                    }
+                    .padding(.horizontal, 8)
                 }
-                .padding(.horizontal, 8)
 
-            } else {
-
-                Text("لا يوجد حدث الآن")
-                    .font(.system(size: 14, weight: .bold))
             }
-        }
-        .containerBackground(for: .widget) {
-            Color.clear
+            .containerBackground(for: .widget) { Color.clear }
         }
     }
 }
+
 
 // MARK: - Widget
 struct NawafilLockWidget: Widget {
