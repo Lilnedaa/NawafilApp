@@ -18,10 +18,19 @@ final class PrayerTimesViewModel: ObservableObject {
 
     @Published var isLoading = false
     @Published var errorMessage: String?
+    
+    
 
     // Extra times
     @Published var duhaStartText: String = ""
     @Published var duhaEndText: String = ""
+    
+    
+    //
+    @Published var tomorrowTimings: PrayerTimings?
+    @Published var tomorrowHijriDate: String = ""
+    @Published var tomorrowHijriMonthNumber: Int = 0
+
 
     // ✅ قيام الليل (عام): بعد العشاء -> قبل الفجر
     @Published var qiyamStartText: String = ""
@@ -90,8 +99,8 @@ final class PrayerTimesViewModel: ObservableObject {
         print("📍 device lat/lon:", loc.coordinate.latitude, loc.coordinate.longitude)
         print("🕒 device timezone:", TimeZone.current.identifier)
 
-        
         do {
+            // ✅ اليوم
             let res = try await AladhanAPIClient.fetchTimings(
                 latitude: loc.coordinate.latitude,
                 longitude: loc.coordinate.longitude,
@@ -105,6 +114,25 @@ final class PrayerTimesViewModel: ObservableObject {
             hijriDate = res.data.date.hijri.date
             hijriMonthNumber = res.data.date.hijri.month.number
             hijriMonthName = res.data.date.hijri.month.ar ?? res.data.date.hijri.month.en
+// بكره
+            let tomorrow = Calendar.current.date(byAdding: .day, value: 1, to: Date())!
+
+            let resTomorrow = try await AladhanAPIClient.fetchTimings(
+                latitude: loc.coordinate.latitude,
+                longitude: loc.coordinate.longitude,
+                date: tomorrow,                  // 👈 هنا نمرر Date مباشرة
+                method: method,
+                timezone: timezoneID,
+                school: 0
+            )
+
+            tomorrowTimings = resTomorrow.data.timings
+            tomorrowHijriDate = resTomorrow.data.date.hijri.date
+            tomorrowHijriMonthNumber = resTomorrow.data.date.hijri.month.number
+
+            tomorrowTimings = resTomorrow.data.timings
+            tomorrowHijriDate = resTomorrow.data.date.hijri.date
+            tomorrowHijriMonthNumber = resTomorrow.data.date.hijri.month.number
 
             // رمضان؟
             showTarawih = (hijriMonthNumber == 9)
@@ -119,7 +147,6 @@ final class PrayerTimesViewModel: ObservableObject {
         isLoading = false
     }
 
-    // MARK: - Compute
 
     private func computeAllExtras() {
         guard let timings else { return }
