@@ -74,22 +74,22 @@ struct HomeView: View {
                         VStack(spacing: 14) {
 
                             NavigationLink(destination: SalahView()) {
-                                cardContent("image1", "الصلاة", "القليل دائم خير")
+                                cardContent("image1", "الصلاة", "طمأنينة القلب")
                             }
                             .buttonStyle(.plain)
 
                             NavigationLink(destination: SiamView()) {
-                                cardContent("image2", "الصيام", "سنن تقربك إلى الله")
+                                cardContent("image2", "الصيام", "باب للخير ورفع الدرجات")
                             }
                             .buttonStyle(.plain)
 
                             NavigationLink(destination: SadaqahView()) {
-                                cardContent("image", "الصدقة", "طمأنينة القلب")
+                                cardContent("image", "الصدقة", "القليل دائم خير")
                             }
                             .buttonStyle(.plain)
 
                             NavigationLink(destination: AdhkarView()) {
-                                cardContent("image3", "الاذكار", "باب للخير ورفع الدرجات")
+                                cardContent("image3", "الاذكار", "سنن تقربك الى الله")
                             }
                             .buttonStyle(.plain)
                         }
