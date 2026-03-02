@@ -84,7 +84,7 @@ struct HomeView: View {
                             .buttonStyle(.plain)
 
                             NavigationLink(destination: SadaqahView()) {
-                                cardContent("image", "الصدقة", "القليل دائم خير")
+                                cardContent("image", "الصدقة", "القليل  الدائم خير من الكثير المنقطع")
                             }
                             .buttonStyle(.plain)
 
@@ -198,6 +198,13 @@ struct HomeView: View {
                 Text(subtitle)
                     .font(.custom("SF Arabic", size: 16))
                     .foregroundStyle(Color(backgroundColor).opacity(0.9))
+                    .padding(.horizontal, 4)
+                       .background(.black.opacity(0.2))
+                       //.cornerRadius(0)
+                       .shadow(color: .black.opacity(0.8), radius: 4, x: 0, y: 2)
+                
+                
+                
             }
             .padding(16)
             .frame(maxWidth: .infinity, alignment: .trailing)
