@@ -123,7 +123,7 @@ struct SiamView: View {
     var body: some View {
         NawafilListView(
             title: "الصيام",
-            description: "الصيام عبادة يمسك فيها المسلم عن المفطرات من طلوع الفجر إلى غروب الشمس تقرباً إلى الله",
+            description: "الصيام عبادة يمسك فيها المسلم عن\n المفطرات من طلوع الفجر إلى غروب الشمس ",
             items: [
                 NawafilItem(title: "صيام الاثنين و الخميس", topic: .mondayThursday),
                 NawafilItem(title: "صيام الأيام البيض", topic: .whiteDays),
