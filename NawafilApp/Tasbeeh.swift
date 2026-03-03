@@ -2,10 +2,13 @@ import SwiftUI
 import WidgetKit
 
 struct EditTotalSheet: View {
+    
     @Binding var total: Int
     @Binding var count: Int
     
     @Environment(\.dismiss) private var dismiss
+    @FocusState private var isTextFieldFocused: Bool
+    
     @State private var selectedTotal: Int = 100
     
     var body: some View {
@@ -16,6 +19,7 @@ struct EditTotalSheet: View {
             VStack(spacing: 16) {
                 
                 HStack {
+                    
                     Button {
                         dismiss()
                     } label: {
@@ -36,12 +40,7 @@ struct EditTotalSheet: View {
                     Spacer()
                     
                     Button {
-                        total = selectedTotal
-                        if count > total {
-                            count = total
-                        }
-                        WidgetCenter.shared.reloadAllTimelines()
-                        dismiss()
+                        applyChanges()
                     } label: {
                         Image(systemName: "checkmark")
                             .font(.callout)
@@ -49,7 +48,10 @@ struct EditTotalSheet: View {
                             .frame(width: 36, height: 36)
                             .background(
                                 LinearGradient(
-                                    colors: [Color(buttonColor).opacity(0.8), Color(buttonColor)],
+                                    colors: [
+                                        Color(buttonColor).opacity(0.8),
+                                        Color(buttonColor)
+                                    ],
                                     startPoint: .topLeading,
                                     endPoint: .bottomTrailing
                                 )
@@ -61,8 +63,11 @@ struct EditTotalSheet: View {
                 }
                 .padding(.horizontal)
                 
+                
+                // MARK: - Controls
                 HStack(spacing: 20) {
                     
+                    // ناقص 10
                     Button {
                         if selectedTotal > 10 {
                             selectedTotal -= 10
@@ -76,11 +81,16 @@ struct EditTotalSheet: View {
                     .glassEffect()
                     .clipShape(Circle())
                     
+                    
+                    // MARK: - Editable Circle
                     ZStack {
                         Circle()
                             .strokeBorder(
                                 LinearGradient(
-                                    colors: [Color(buttonColor).opacity(0.3), Color(buttonColor)],
+                                    colors: [
+                                        Color(buttonColor).opacity(0.3),
+                                        Color(buttonColor)
+                                    ],
                                     startPoint: .topLeading,
                                     endPoint: .bottomTrailing
                                 ),
@@ -88,14 +98,24 @@ struct EditTotalSheet: View {
                             )
                             .frame(width: 90, height: 90)
                         
-                        Text("\(selectedTotal)")
+                        TextField("", value: $selectedTotal, format: .number)
+                            .keyboardType(.numberPad)
+                            .multilineTextAlignment(.center)
                             .font(.system(size: 32, weight: .bold))
                             .foregroundStyle(Color(textColor))
+                            .frame(width: 90, height: 90)
+                            .focused($isTextFieldFocused)
+                            .onChange(of: selectedTotal) { _, newValue in
+                                if newValue < 1 { selectedTotal = 1 }
+                                if newValue > 100000 { selectedTotal = 100000 }
+                            }
                     }
                     .glassEffect()
                     .clipShape(Circle())
                     .frame(width: 110, height: 110)
                     
+                    
+                    // زائد 10
                     Button {
                         selectedTotal += 10
                     } label: {
@@ -115,6 +135,31 @@ struct EditTotalSheet: View {
         .onAppear {
             selectedTotal = total
         }
+        .toolbar {
+            ToolbarItemGroup(placement: .keyboard) {
+                Spacer()
+                Button("تم") {
+                    isTextFieldFocused = false
+                }
+            }
+        }
+    }
+    
+    
+    // MARK: - Apply Logic
+    private func applyChanges() {
+        if selectedTotal < 1 {
+            selectedTotal = 1
+        }
+        
+        total = selectedTotal
+        
+        if count > total {
+            count = total
+        }
+        
+        WidgetCenter.shared.reloadAllTimelines()
+        dismiss()
     }
 }
 
@@ -141,12 +186,21 @@ struct Tsbeeh: View {
             VStack {
                 ZStack {
                     ProgressRing(total: total, count: count, size: 300)
-                    
+
+                    Circle()
+                        .fill(Color.clear)
+                        .frame(width: 300, height: 300)
+                        .contentShape(Circle())
+                        .onTapGesture {
+                            count += 1
+                            WidgetCenter.shared.reloadAllTimelines()
+                        }
+
                     VStack(spacing: 8) {
                         Text("\(count)")
                             .font(.system(size: 42, weight: .bold))
                             .foregroundStyle(Color(textColor))
-                        
+
                         Text("من \(total) ذكر")
                             .font(.caption)
                             .foregroundColor(.gray)
@@ -154,7 +208,7 @@ struct Tsbeeh: View {
                 }
                 .padding()
                 
-                HStack(spacing: 24) {
+                HStack(spacing: 150) {
                     Button {
                         count = 0
                         WidgetCenter.shared.reloadAllTimelines()
@@ -178,17 +232,7 @@ struct Tsbeeh: View {
                     .glassEffect()
                     .clipShape(Circle())
                     
-                    Button {
-                        count += 1
-                        WidgetCenter.shared.reloadAllTimelines()
-                    } label: {
-                        Image(systemName: "plus")
-                            .font(.title2)
-                            .foregroundStyle(Color(buttonColor))
-                            .frame(width: 56, height: 56)
-                    }
-                    .glassEffect()
-                    .clipShape(Circle())
+                    
                 }
                 .padding(.top, 24)
             }
