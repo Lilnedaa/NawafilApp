@@ -67,7 +67,7 @@ struct HomeView: View {
                         Text("العبادات")
                             .font(.system(size: 24, weight: .bold))
                             .foregroundStyle(textColor)
-                            .frame(maxWidth: .infinity, alignment: .trailing)
+                            .frame(maxWidth: .infinity, alignment: .leading)
                             .padding(.top, 6)
 
                         // Cards (كلها تفتح نفس صفحة النوافل)
@@ -122,6 +122,9 @@ struct HomeView: View {
                 vm.onAppear()
             }
         }
+        .environment(\.layoutDirection, .rightToLeft)
+        .environment(\.locale, Locale(identifier: "ar"))
+
     }
 
     // MARK: - Now Pill Button
@@ -134,7 +137,7 @@ struct HomeView: View {
                     .font(.system(size: 24))
                     .foregroundStyle(Color.white)
 
-                VStack(alignment: .trailing, spacing: 4) {
+                VStack(alignment: .leading, spacing: 4) {
                     Text(top)
                         .font(.custom("SF Arabic", size: 14).weight(.regular))
                         .foregroundStyle(.baje.opacity(0.55))
@@ -144,9 +147,9 @@ struct HomeView: View {
                         .foregroundStyle(.baje)
                         .minimumScaleFactor(0.85)
                 }
-                .frame(maxWidth: .infinity, alignment: .trailing)
+                .frame(maxWidth: .infinity, alignment: .leading)
             }
-            .environment(\.layoutDirection, .leftToRight)
+            .environment(\.layoutDirection, .rightToLeft)
             .padding(.horizontal, 18)
             .frame(width: 227, height: 68)
             .background(
@@ -173,7 +176,7 @@ struct HomeView: View {
 
     //  نفس تصميم cardButton لكن بدون Button (عشان نستخدمه داخل NavigationLink)
     func cardContent(_ image: String, _ title: String, _ subtitle: String) -> some View {
-        ZStack(alignment: .topTrailing) {
+        ZStack(alignment: .topLeading) {
             Image(image)
                 .resizable()
                 .scaledToFill()
@@ -196,7 +199,7 @@ struct HomeView: View {
                 }
 
 
-            VStack(alignment: .trailing, spacing: 6) {
+            VStack(alignment: .leading, spacing: 6) {
                 Text(title)
                     .font(.system(size: 24, weight: .bold))
                     .foregroundStyle(Color(backgroundColor))
@@ -213,7 +216,7 @@ struct HomeView: View {
                 
             }
             .padding(16)
-            .frame(maxWidth: .infinity, alignment: .trailing)
+            .frame(maxWidth: .infinity, alignment: .leading)
         }
     }
 }
