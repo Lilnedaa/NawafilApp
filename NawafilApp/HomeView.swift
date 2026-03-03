@@ -35,7 +35,7 @@ struct HomeView: View {
                         VStack(spacing: 12) {
                             TabView(selection: $vm.selectedIndex) {
 
-                                // ✅ إذا ما فيه أحداث
+                                //  إذا ما فيه أحداث
                                     ForEach(Array(vm.events.enumerated()), id: \.element.id) { index, item in
                                         nowPillButton(item.top, item.title, item.icon)
                                             .tag(index)
@@ -84,7 +84,7 @@ struct HomeView: View {
                             .buttonStyle(.plain)
 
                             NavigationLink(destination: SadaqahView()) {
-                                cardContent("image", "الصدقة", "القليل دائم خير")
+                                cardContent("image", "الصدقة", "القليل  الدائم خير من الكثير المنقطع")
                             }
                             .buttonStyle(.plain)
 
@@ -95,6 +95,12 @@ struct HomeView: View {
                         }
 
                         .padding(.top, 6)
+                        
+                        Text("المصدر: الشيخ ابن باز رحمه الله")
+                            .font(.custom("SF Arabic", size: 15))
+                            .foregroundStyle(textColor.opacity(0.6))
+                            .frame(maxWidth: .infinity, alignment: .center)
+                            .padding(.top, 12)
 
                         Spacer(minLength: 110)
                     }
@@ -165,7 +171,7 @@ struct HomeView: View {
             .padding(.horizontal, 30)
     }
 
-    // ✅ نفس تصميم cardButton لكن بدون Button (عشان نستخدمه داخل NavigationLink)
+    //  نفس تصميم cardButton لكن بدون Button (عشان نستخدمه داخل NavigationLink)
     func cardContent(_ image: String, _ title: String, _ subtitle: String) -> some View {
         ZStack(alignment: .topTrailing) {
             Image(image)
@@ -198,6 +204,13 @@ struct HomeView: View {
                 Text(subtitle)
                     .font(.custom("SF Arabic", size: 16))
                     .foregroundStyle(Color(backgroundColor).opacity(0.9))
+                    .padding(.horizontal, 4)
+                       .background(.black.opacity(0.2))
+                       //.cornerRadius(0)
+                       .shadow(color: .black.opacity(0.8), radius: 4, x: 0, y: 2)
+                
+                
+                
             }
             .padding(16)
             .frame(maxWidth: .infinity, alignment: .trailing)
