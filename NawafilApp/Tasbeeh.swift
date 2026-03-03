@@ -21,51 +21,41 @@ struct EditTotalSheet: View {
                 HStack {
                     
                     Button {
-                        dismiss()
+                        applyChanges()
                     } label: {
-                        Image(systemName: "xmark")
-                            .font(.callout)
-                            .foregroundStyle(Color(buttonColor))
-                            .frame(width: 36, height: 36)
+                        Image(systemName: "checkmark")
+                            .font(.system(size: 16, weight: .semibold))
+                            .foregroundColor(.white)
+                            .frame(width: 44, height: 44)
+                            .background(Color(buttonColor))
+                            .clipShape(Circle())
+                            .glassEffect(.regular.interactive(), in: Circle())
                     }
-                    .glassEffect()
-                    .clipShape(Circle())
                     
                     Spacer()
                     
                     Text("تحديد الهدف")
-                        .font(.subheadline.bold())
+                        .font(.system(size: 19, weight: .bold))
                         .foregroundStyle(Color(textColor))
                     
                     Spacer()
                     
                     Button {
-                        applyChanges()
+                        dismiss()
                     } label: {
-                        Image(systemName: "checkmark")
-                            .font(.callout)
-                            .foregroundStyle(.white)
-                            .frame(width: 36, height: 36)
-                            .background(
-                                LinearGradient(
-                                    colors: [
-                                        Color(buttonColor).opacity(0.8),
-                                        Color(buttonColor)
-                                    ],
-                                    startPoint: .topLeading,
-                                    endPoint: .bottomTrailing
-                                )
-                            )
-                            .clipShape(Circle())
+                        Image(systemName: "xmark")
+                            .font(.system(size: 16, weight: .semibold))
+                            .foregroundColor(Color(textColor))
+                            .frame(width: 44, height: 44)
+                            .glassEffect(.regular.tint(.clear).interactive(), in: Circle())
                     }
-                    .glassEffect()
-                    .clipShape(Circle())
                 }
-                .padding(.horizontal)
+                .padding(.horizontal, 30)
+                .padding(.top, 20)
                 
                 
                 // MARK: - Controls
-                HStack(spacing: 20) {
+                HStack(spacing: 40) {
                     
                     // ناقص 10
                     Button {
@@ -74,12 +64,11 @@ struct EditTotalSheet: View {
                         }
                     } label: {
                         Image(systemName: "minus")
-                            .font(.title3)
-                            .foregroundStyle(Color(buttonColor))
+                            .font(.system(size: 16, weight: .semibold))
+                            .foregroundColor(Color(buttonColor))
                             .frame(width: 44, height: 44)
+                            .glassEffect(.regular.tint(.clear).interactive(), in: Circle())
                     }
-                    .glassEffect()
-                    .clipShape(Circle())
                     
                     
                     // MARK: - Editable Circle
@@ -120,12 +109,11 @@ struct EditTotalSheet: View {
                         selectedTotal += 10
                     } label: {
                         Image(systemName: "plus")
-                            .font(.title3)
-                            .foregroundStyle(Color(buttonColor))
+                            .font(.system(size: 16, weight: .semibold))
+                            .foregroundColor(Color(buttonColor))
                             .frame(width: 44, height: 44)
+                            .glassEffect(.regular.tint(.clear).interactive(), in: Circle())
                     }
-                    .glassEffect()
-                    .clipShape(Circle())
                 }
                 
                 Spacer()
