@@ -47,7 +47,6 @@ struct ContentView: View {
                     .tabViewStyle(.page(indexDisplayMode: .never))
                     .frame(height: 550)
 
-                    // Page Indicator مع 4 نقاط فقط
                     PageIndicator(
                         currentPage: viewModel.currentIndex,
                         totalPages: viewModel.cards.count,

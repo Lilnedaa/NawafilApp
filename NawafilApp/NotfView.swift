@@ -141,7 +141,6 @@ struct NotfNotificationsView: View {
                     }
                 }
                 
-                // بعد ثانيتين، تحقق من الإشعارات المجدولة
                 DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
                     checkPendingNotifications()
                 }
@@ -161,11 +160,7 @@ struct NotfNotificationsView: View {
     }
     
     private func handleSadaqaToggle(isOn: Bool) {
-        guard let timings = prayerVM.timings else {
-            print(" مواقيت الصلاة مو موجودة")
-            return
-        }
-        
+        guard let timings = prayerVM.timings else { return }
         if isOn {
             notificationManager.scheduleSadaqaNotification(asrTime: timings.Asr)
         } else {
@@ -174,11 +169,7 @@ struct NotfNotificationsView: View {
     }
     
     private func handleQiyamToggle(isOn: Bool) {
-        guard let timings = prayerVM.timings else {
-            print("مواقيت مو موجودة بعد")
-            return
-        }
-        
+        guard let timings = prayerVM.timings else { return }
         if isOn {
             notificationManager.scheduleQiyamNotification(ishaTime: timings.Isha)
         } else {
@@ -187,15 +178,9 @@ struct NotfNotificationsView: View {
     }
     
     private func handleAdhkarToggle(isOn: Bool) {
-        guard let timings = prayerVM.timings else {
-            print("مواقيت الصلاة مو موجودة")
-            return
-        }
-        
+        guard let timings = prayerVM.timings else { return }
         if isOn {
-            //الصباح
             notificationManager.scheduleMorningAdhkarNotification(fajrTime: timings.Fajr)
-            //المساء
             notificationManager.scheduleEveningAdhkarNotification(maghribTime: timings.Maghrib)
         } else {
             notificationManager.cancelNotification(identifier: "adhkar_morning")
@@ -223,7 +208,6 @@ struct NotfNotificationsView: View {
         if isOn {
             notificationManager.scheduleWhiteDaysNotification(currentHijriMonth: prayerVM.hijriMonthNumber)
         } else {
-            //ايام بيض
             for month in 1...12 {
                 notificationManager.cancelNotification(identifier: "white_days_\(month)")
             }
@@ -269,8 +253,8 @@ struct NotifCardView: View {
             Text(title)
                 .font(.system(size: 22, weight: .bold, design: .default))
                 .foregroundColor(.white)
-                .frame(maxWidth: .infinity, alignment: .trailing)
-                .padding(.trailing, 20)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(.leading, 20)
                 .padding(.vertical, 16)
 
             Rectangle()
@@ -292,6 +276,7 @@ struct NotifCardView: View {
         }
         .background(buttonColor)
         .cornerRadius(30)
+        .environment(\.layoutDirection, .rightToLeft)
     }
 }
 
@@ -316,6 +301,7 @@ struct NotifRowView: View {
                 .font(.system(size: 18, weight: .regular, design: .default))
                 .foregroundColor(.white)
         }
+        .environment(\.layoutDirection, .leftToRight) 
         .padding(.horizontal, 20)
         .padding(.vertical, 16)
     }

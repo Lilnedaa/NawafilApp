@@ -14,6 +14,7 @@ struct NawafilListView: View {
 
     @State private var showAlert = false
     @State private var selectedItem: NawafilItem?
+    @Environment(\.dismiss) var dismiss
 
     
     init(
@@ -33,22 +34,23 @@ struct NawafilListView: View {
                     .ignoresSafeArea()
 
                 VStack(spacing: 0) {
+                    
                     Text(title)
                         .font(.system(size: 48, weight: .bold, design: .default))
                         .font(.custom("SF Arabic Pro", size: 48))
                         .foregroundColor(textColor)
                         .padding(.top, 10)
-
+                    
                     Text(description)
                         .fontWeight(.regular)
                         .foregroundColor(textColor)
                         .multilineTextAlignment(.center)
                         .padding(.horizontal, 40)
                         .padding(.top, 50)
-
+                    
                     Spacer()
                         .frame(height: 50)
-
+                    
                     VStack(spacing: 16) {
                         ForEach(items) { item in
                             CButton(item: item, onTap: {
@@ -60,9 +62,9 @@ struct NawafilListView: View {
                         }
                     }
                     .padding(.horizontal, 40)
-
+                    
                     Spacer()
-
+                    
                         .frame(height: 75)
                         .frame(maxWidth: .infinity)
                         .padding(.bottom, 0)
@@ -141,7 +143,7 @@ struct SadaqahView: View {
             description: "الصدقة عبادة يتقرب بها المسلم إلى الله ببذل المال أو المنفعة أو المعروف للمحتاجين ابتغاء مرضاة الله، وهي سبب للبركة وتكفير الذنوب",
             items: [
                 NawafilItem(title: "منصة إحسان", topic: .ehsan, url: "https://ehsan.sa"),
-                NawafilItem(title: "منصة شفاء", topic: .shifa, url: "https://shifa.moh.gov.sa")
+//                NawafilItem(title: "منصة شفاء", topic: .shifa, url: "https://shifa.moh.gov.sa")
             ]
         )
     }
