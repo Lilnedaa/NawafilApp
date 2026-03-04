@@ -7,7 +7,6 @@
 
 import SwiftUI
 
-// MARK: - AppStorage Helpers (Save/Load Array)
 private func encodeStringArray(_ arr: [String]) -> String {
     let data = (try? JSONEncoder().encode(arr)) ?? Data()
     return String(data: data, encoding: .utf8) ?? "[]"
@@ -19,7 +18,6 @@ private func decodeStringArray(_ str: String) -> [String] {
     return arr
 }
 
-// MARK: - Root Tracker
 struct Tracker: View {
     @AppStorage("savedWorshipsJSON") private var savedWorshipsJSON: String = "[]"
     var savedWorships: [String] { decodeStringArray(savedWorshipsJSON) }
@@ -37,7 +35,6 @@ struct Tracker: View {
     }
 }
 
-// MARK: - Selection Screen
 struct WorshipSelectionView: View {
     @State private var selectedWorships: Set<String> = []
     @State private var navigateToTracker = false
@@ -118,7 +115,7 @@ struct WorshipSelectionView: View {
     }
 }
 
-// MARK: - Capsule Button
+// Capsule Button
 struct CapsuleButton: View {
     let title: String
     let isSelected: Bool
@@ -136,11 +133,9 @@ struct CapsuleButton: View {
                         Circle()
                             .fill(Color.white.opacity(0.6))
                             .frame(width: 24, height: 24)
-
                         Circle()
                             .stroke(Color.white.opacity(0.8), lineWidth: 2)
                             .frame(width: 24, height: 24)
-
                         Image(systemName: "checkmark")
                             .font(.system(size: 12, weight: .bold))
                             .foregroundColor(buttonColor)
@@ -150,29 +145,17 @@ struct CapsuleButton: View {
             }
             .padding(.horizontal, 20)
             .padding(.vertical, 14)
-            .background(
-                Capsule().fill(isSelected ? buttonColor.opacity(0.85) : Color.white.opacity(0.3))
-            )
-            .overlay(
-                Capsule().stroke(
-                    isSelected ? Color.white.opacity(0.5) : Color.gray.opacity(0.3),
-                    lineWidth: isSelected ? 2 : 1.5
-                )
-            )
+            .background(Capsule().fill(isSelected ? buttonColor.opacity(0.85) : Color.white.opacity(0.3)))
+            .overlay(Capsule().stroke(isSelected ? Color.white.opacity(0.5) : Color.gray.opacity(0.3), lineWidth: isSelected ? 2 : 1.5))
         }
     }
 }
 
-// MARK: - FlowLayout
 struct FlowLayout: Layout {
     var spacing: CGFloat = 10
 
     func sizeThatFits(proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) -> CGSize {
-        let result = FlowResult(
-            in: proposal.replacingUnspecifiedDimensions().width,
-            subviews: subviews,
-            spacing: spacing
-        )
+        let result = FlowResult(in: proposal.replacingUnspecifiedDimensions().width, subviews: subviews, spacing: spacing)
         return result.size
     }
 
@@ -180,10 +163,7 @@ struct FlowLayout: Layout {
         let result = FlowResult(in: bounds.width, subviews: subviews, spacing: spacing)
         for (index, subview) in subviews.enumerated() {
             subview.place(
-                at: CGPoint(
-                    x: bounds.minX + result.positions[index].x,
-                    y: bounds.minY + result.positions[index].y
-                ),
+                at: CGPoint(x: bounds.minX + result.positions[index].x, y: bounds.minY + result.positions[index].y),
                 proposal: .unspecified
             )
         }
@@ -200,43 +180,41 @@ struct FlowLayout: Layout {
 
             for subview in subviews {
                 let s = subview.sizeThatFits(.unspecified)
-
                 if x + s.width > maxWidth * 1.1 && x > 0 {
                     x = 0
                     y += lineHeight + spacing
                     lineHeight = 0
                 }
-
                 positions.append(CGPoint(x: x, y: y))
                 lineHeight = max(lineHeight, s.height)
                 x += s.width + spacing
             }
-
             self.size = CGSize(width: maxWidth, height: y + lineHeight)
         }
     }
 }
 
-// MARK: - Tracker View
 struct WorshipTrackerView: View {
     @State private var selectedWorships: [String]
-    @State private var checkedToday: Set<String> = []
     @State private var fireAnimation: Bool = false
     @State private var showAddSheet = false
     @State private var tempSelectedWorships: Set<String> = []
 
-    @AppStorage("lastResetDay") private var lastResetDay: Double = 0
-
-    @AppStorage("lastFullCompletionTime") private var lastFullCompletionTime: Double = 0
-    @AppStorage("prevFullCompletionTime") private var prevFullCompletionTime: Double = 0
-
+    @AppStorage("checkedTodayJSON")        private var checkedTodayJSON: String = "[]"
+    @AppStorage("lastResetDay")            private var lastResetDay: Double = 0
+    @AppStorage("lastFullCompletionTime")  private var lastFullCompletionTime: Double = 0
     @AppStorage("lastStreakIncrementTime") private var lastStreakIncrementTime: Double = 0
-    @AppStorage("prevStreakIncrementTime") private var prevStreakIncrementTime: Double = 0
-
-    @AppStorage("streakCount") private var streakCount: Int = 0
-    @AppStorage("savedWorshipsJSON") private var savedWorshipsJSON: String = "[]"
+    @AppStorage("streakCount")            private var streakCount: Int = 0
+    @AppStorage("savedWorshipsJSON")      private var savedWorshipsJSON: String = "[]"
 
     @Environment(\.scenePhase) private var scenePhase
+
+    private var checkedToday: Set<String> {
+        Set(decodeStringArray(checkedTodayJSON))
+    }
+    private func saveChecked(_ set: Set<String>) {
+        checkedTodayJSON = encodeStringArray(Array(set))
+    }
 
     let defaultWorships = [
         "قراءة القرآن",
@@ -259,26 +237,18 @@ struct WorshipTrackerView: View {
                     Text("متابعة النوافل")
                         .font(.system(size: 24, weight: .bold))
                         .foregroundColor(textColor)
-                    
+
                     HStack {
                         Spacer()
-                        
                         Button {
                             tempSelectedWorships = Set(selectedWorships)
                             showAddSheet = true
                         } label: {
                             Image(systemName: "plus")
-                                .font(.title2)
-                                .foregroundStyle(Color(buttonColor))
-                                .frame(width: 40, height: 40)
-                                .background(
-                                    Circle()
-                                        .fill(Color.white.opacity(0.3))
-                                )
-                                .overlay(
-                                    Circle()
-                                        .stroke(Color.white.opacity(0.5), lineWidth: 1.5)
-                                )
+                                .font(.system(size: 18, weight: .semibold))
+                                .foregroundStyle(Color(textColor))
+                                .frame(width: 44, height: 44)
+                                .glassEffect(.regular.tint(.clear).interactive(), in: Circle())
                         }
                     }
                 }
@@ -288,7 +258,7 @@ struct WorshipTrackerView: View {
                 ScrollView {
                     VStack(spacing: 60) {
 
-// streak
+                        // streak
                         ZStack {
                             Circle()
                                 .stroke(Color.white.opacity(0.2), lineWidth: 15)
@@ -332,17 +302,45 @@ struct WorshipTrackerView: View {
                 selectedWorships: $tempSelectedWorships,
                 defaultWorships: defaultWorships,
                 onSave: {
+                    let previousWorships = Set(selectedWorships)
+                    let newlyAdded = tempSelectedWorships.subtracting(previousWorships)
+                    let removed = previousWorships.subtracting(tempSelectedWorships)
+
+                    for worship in removed {
+                        UserDefaults.standard.removeObject(forKey: "count_\(worship)")
+                        UserDefaults.standard.removeObject(forKey: "lastTap_\(worship)")
+                    }
+
+                    if tempSelectedWorships.isEmpty {
+                        savedWorshipsJSON = "[]"
+                        selectedWorships = []
+                        saveChecked([])
+                        streakCount = 0
+                        lastFullCompletionTime = 0
+                        lastStreakIncrementTime = 0
+                        showAddSheet = false
+                        return
+                    }
+
                     selectedWorships = Array(tempSelectedWorships)
-                    checkedToday = checkedToday.filter { tempSelectedWorships.contains($0) }
+                    let filtered = checkedToday.filter { tempSelectedWorships.contains($0) }
+                    saveChecked(filtered)
                     savedWorshipsJSON = encodeStringArray(selectedWorships)
+
+                    let hadOnlyRemovedOnes = previousWorships == removed
+                    if hadOnlyRemovedOnes && !newlyAdded.isEmpty {
+                        streakCount = 0
+                        lastFullCompletionTime = 0
+                        lastStreakIncrementTime = 0
+                    }
+
                     showAddSheet = false
                 }
             )
         }
         .onAppear {
             validateAndResetIfNeeded()
-            let today = startOfTodayTimeInterval()
-            if lastResetDay == 0 { lastResetDay = today }
+            if lastResetDay == 0 { lastResetDay = startOfTodayTimeInterval() }
         }
         .onChange(of: scenePhase) { _, newValue in
             if newValue == .active { validateAndResetIfNeeded() }
@@ -363,152 +361,81 @@ struct WorshipTrackerView: View {
 
         if lastResetDay != today {
             lastResetDay = today
-            checkedToday.removeAll()
-            
-            // صفّر أي عبادة وصلت 30
+            saveChecked([])
+
             for worship in selectedWorships {
                 let countKey = "count_\(worship)"
-                let currentCount = UserDefaults.standard.integer(forKey: countKey)
-                if currentCount >= 30 {
+                if UserDefaults.standard.integer(forKey: countKey) >= 30 {
                     UserDefaults.standard.set(0, forKey: countKey)
                 }
             }
-            
+
             if lastFullCompletionTime > 0 {
                 let daysSinceCompletion = (now - lastFullCompletionTime) / (24.0 * 3600.0)
-
-                if daysSinceCompletion > 2.0 {
-                    resetStreak()
-                }
+                if daysSinceCompletion > 2.0 { resetStreak() }
+            } else {
+                resetStreak()
             }
         }
     }
 
     private func resetStreak() {
         streakCount = 0
-        checkedToday.removeAll()
-
+        saveChecked([])
         lastFullCompletionTime = 0
-        prevFullCompletionTime = 0
-
         lastStreakIncrementTime = 0
-        prevStreakIncrementTime = 0
     }
 
     private func streakWasIncrementedToday() -> Bool {
         guard lastStreakIncrementTime > 0 else { return false }
         let today = startOfTodayTimeInterval()
-        let incrementDay = Calendar.current.startOfDay(for: Date(timeIntervalSince1970: lastStreakIncrementTime)).timeIntervalSince1970
+        let incrementDay = Calendar.current.startOfDay(
+            for: Date(timeIntervalSince1970: lastStreakIncrementTime)
+        ).timeIntervalSince1970
         return incrementDay == today
     }
 
-    
     private func toggleCheck(for worship: String) {
         validateAndResetIfNeeded()
 
-      
-        if checkedToday.contains(worship) {
-            let wasAllCheckedBefore = (checkedToday.count == selectedWorships.count)
+        guard !checkedToday.contains(worship) else { return }
 
-            checkedToday.remove(worship)
+        var updated = checkedToday
+        updated.insert(worship)
+        saveChecked(updated)
 
-           
-            decrementSingleWorshipCountIfTappedToday(for: worship)
-
-          
-            if wasAllCheckedBefore && streakWasIncrementedToday() {
-                undoTodayStreakIncrement()
-            }
-
-            return
-        }
-
-     
-        checkedToday.insert(worship)
-
-        
         incrementSingleWorshipCountOncePerDay(for: worship)
 
-       
-        let nowAllChecked = checkedToday.count == selectedWorships.count
-        guard nowAllChecked else { return }
+        guard updated.count == selectedWorships.count else { return }
+
+        guard !streakWasIncrementedToday() else { return }
 
         let now = Date().timeIntervalSince1970
-        let today = startOfTodayTimeInterval()
-        
-        let alreadyIncrementedToday = streakWasIncrementedToday()
-        
-        if !alreadyIncrementedToday {
+        lastFullCompletionTime = now
+        lastStreakIncrementTime = now
 
-            prevStreakIncrementTime = lastStreakIncrementTime
-            prevFullCompletionTime = lastFullCompletionTime
-
-            lastFullCompletionTime = now
-            lastStreakIncrementTime = now
-
-            streakCount += 1
-            fireAnimation = true
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                fireAnimation = false
-            }
+        streakCount += 1
+        fireAnimation = true
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+            fireAnimation = false
         }
     }
-
-
-    private func undoTodayStreakIncrement() {
-        if streakCount > 0 { streakCount -= 1 }
-
-       
-        lastStreakIncrementTime = prevStreakIncrementTime
-        lastFullCompletionTime = prevFullCompletionTime
-
-      
-        prevStreakIncrementTime = 0
-        prevFullCompletionTime = 0
-    }
-
 
     private func incrementSingleWorshipCountOncePerDay(for worship: String) {
         let today = startOfTodayTimeInterval()
-
         let lastTapKey = "lastTap_\(worship)"
         let countKey   = "count_\(worship)"
 
         let lastTapDay = UserDefaults.standard.double(forKey: lastTapKey)
         guard lastTapDay != today else { return }
 
-        let currentCount = UserDefaults.standard.integer(forKey: countKey)
-
-        if currentCount >= 30 {
-            UserDefaults.standard.set(0, forKey: countKey)
-        }
-        let newCount = UserDefaults.standard.integer(forKey: countKey) + 1
-        UserDefaults.standard.set(newCount, forKey: countKey)
-
+        var currentCount = UserDefaults.standard.integer(forKey: countKey)
+        if currentCount >= 30 { currentCount = 0 }
+        UserDefaults.standard.set(currentCount + 1, forKey: countKey)
         UserDefaults.standard.set(today, forKey: lastTapKey)
-    }
-
-    
-    private func decrementSingleWorshipCountIfTappedToday(for worship: String) {
-        let today = startOfTodayTimeInterval()
-
-        let lastTapKey = "lastTap_\(worship)"
-        let countKey   = "count_\(worship)"
-
-        let lastTapDay = UserDefaults.standard.double(forKey: lastTapKey)
-        guard lastTapDay == today else { return }
-
-        let currentCount = UserDefaults.standard.integer(forKey: countKey)
-        if currentCount > 0 {
-            UserDefaults.standard.set(currentCount - 1, forKey: countKey)
-        }
-
-   
-        UserDefaults.standard.set(0, forKey: lastTapKey)
     }
 }
 
-// MARK: - Add Worship Sheet
 struct AddWorshipSheet: View {
     @Binding var selectedWorships: Set<String>
     let defaultWorships: [String]
@@ -525,39 +452,23 @@ struct AddWorshipSheet: View {
                 HStack {
                     Button { dismiss() } label: {
                         Image(systemName: "xmark")
-                            .font(.title3)
+                            .font(.system(size: 16, weight: .semibold))
                             .foregroundColor(textColor)
-                            .frame(width: 40, height: 40)
-                            .background(
-                                Circle()
-                                    .fill(Color.white.opacity(0.3))
-                            )
-                            .overlay(
-                                Circle()
-                                    .stroke(Color.white.opacity(0.5), lineWidth: 1.5)
-                            )
+                            .frame(width: 44, height: 44)
+                            .glassEffect(.regular.tint(.clear).interactive(), in: Circle())
                     }
 
                     Spacer()
 
                     Button {
-                        if !selectedWorships.isEmpty { onSave() }
+                        onSave()
                     } label: {
                         Image(systemName: "checkmark")
-                            .font(.title3)
-                            .fontWeight(.semibold)
-                            .foregroundColor(selectedWorships.isEmpty ? .gray : buttonColor)
-                            .frame(width: 40, height: 40)
-                            .background(
-                                Circle()
-                                    .fill(Color.white.opacity(0.3))
-                            )
-                            .overlay(
-                                Circle()
-                                    .stroke(Color.white.opacity(0.5), lineWidth: 1.5)
-                            )
+                            .font(.system(size: 16, weight: .semibold))
+                            .foregroundColor(Color(buttonColor))
+                            .frame(width: 44, height: 44)
+                            .glassEffect(.regular.tint(.clear).interactive(), in: Circle())
                     }
-                    .disabled(selectedWorships.isEmpty)
                 }
                 .padding(.horizontal, 30)
                 .padding(.top, 20)
@@ -575,8 +486,7 @@ struct AddWorshipSheet: View {
                 .padding(.horizontal, 40)
                 .padding(.top, 30)
 
-                Spacer()
-                    .frame(height: 10)
+                Spacer().frame(height: 10)
 
                 FlowLayout(spacing: 12) {
                     ForEach(defaultWorships, id: \.self) { worship in
@@ -601,7 +511,6 @@ struct AddWorshipSheet: View {
     }
 }
 
-// MARK: - Worship Progress Card
 struct WorshipProgressCard: View {
     let worshipName: String
     let isChecked: Bool
@@ -629,14 +538,12 @@ struct WorshipProgressCard: View {
             Spacer()
 
             HStack(spacing: 0) {
-
                 Button { onToggle() } label: {
                     ZStack {
                         if isChecked {
                             Circle()
                                 .fill(buttonColor)
                                 .frame(width: 35, height: 35)
-
                             Image(systemName: "checkmark")
                                 .font(.system(size: 16, weight: .bold))
                                 .foregroundColor(.white)
@@ -651,7 +558,7 @@ struct WorshipProgressCard: View {
                 .padding(.top, 30)
 
                 Spacer()
-                
+
                 ZStack {
                     Circle()
                         .stroke(Color.gray.opacity(0.15), lineWidth: 6)
@@ -676,14 +583,8 @@ struct WorshipProgressCard: View {
             Spacer()
         }
         .frame(width: 165, height: 165)
-        .background(
-            RoundedRectangle(cornerRadius: 22)
-                .fill(Color.white.opacity(0.4))
-        )
-        .overlay(
-            RoundedRectangle(cornerRadius: 22)
-                .stroke(Color.white.opacity(0.5), lineWidth: 1.5)
-        )
+        .background(RoundedRectangle(cornerRadius: 22).fill(Color.white.opacity(0.4)))
+        .overlay(RoundedRectangle(cornerRadius: 22).stroke(Color.white.opacity(0.5), lineWidth: 1.5))
     }
 }
 
