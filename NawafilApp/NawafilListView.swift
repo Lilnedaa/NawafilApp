@@ -45,6 +45,9 @@ struct NawafilListView: View {
                         .fontWeight(.regular)
                         .foregroundColor(textColor)
                         .multilineTextAlignment(.center)
+                        .lineLimit(nil)                                    
+                        .fixedSize(horizontal: false, vertical: true)      
+
                         .padding(.horizontal, 40)
                         .padding(.top, 50)
                     

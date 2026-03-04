@@ -52,7 +52,7 @@ struct NotfNotificationsView: View {
                                     }
                                 ),
                                 NotifItemModel(
-                                    title: "اذكار الصباح والمساء",
+                                    title: "أذكار الصباح و المساء",
                                     isOn: $adkarN,
                                     onToggle: { isOn in
                                         handleAdhkarToggle(isOn: isOn)
@@ -76,35 +76,35 @@ struct NotfNotificationsView: View {
                             title: "الصيام",
                             items: [
                                 NotifItemModel(
-                                    title: "عاشوراء",
+                                    title: "صيام عاشوراء",
                                     isOn: $AshuraN,
                                     onToggle: { isOn in
                                         handleAshuraToggle(isOn: isOn)
                                     }
                                 ),
                                 NotifItemModel(
-                                    title: "يوم عرفة",
+                                    title: "صيام يوم عرفة",
                                     isOn: $ArafaN,
                                     onToggle: { isOn in
                                         handleArafaToggle(isOn: isOn)
                                     }
                                 ),
                                 NotifItemModel(
-                                    title: "أيام البيض",
+                                    title: "صيام الأيام البيض",
                                     isOn: $WhiteDaysN,
                                     onToggle: { isOn in
                                         handleWhiteDaysToggle(isOn: isOn)
                                     }
                                 ),
                                 NotifItemModel(
-                                    title: "الاثنين والخميس",
+                                    title: "صيام الإثنين و الخميس",
                                     isOn: $MondayN,
                                     onToggle: { isOn in
                                         handleMondayThursdayToggle(isOn: isOn)
                                     }
                                 ),
                                 NotifItemModel(
-                                    title: "ست من شوال",
+                                    title: "صيام الست من شوال",
                                     isOn: $ShawwalN,
                                     onToggle: { isOn in
                                         handleShawwalToggle(isOn: isOn)
@@ -123,7 +123,7 @@ struct NotfNotificationsView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .principal) {
-                    Text("تفعيل الاشعارات")
+                    Text("تفعيل الإشعارات")
                         .font(.system(size: 30, weight: .bold, design: .default))
                         .foregroundColor(textColor)
                 }
